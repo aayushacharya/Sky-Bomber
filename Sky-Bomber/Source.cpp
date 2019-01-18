@@ -4,19 +4,21 @@
 
 int main()
 {
-	/*float rectX=10.0f, rectY=20.0f;*/
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SKY BOMBER");
 
-	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture;
+	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture, planeTexture;
 	if (!bgtexture.loadFromFile("background.png") || !groundTexture.loadFromFile("ground.png"))
 		std::cout << "Cannot load from file";
 	if (!grassTexture.loadFromFile("grass.png") || !stoneTexture.loadFromFile("stone.png"))
 		std::cout << "Cannot open from file";
-	sf::Sprite bgsprite, groundSprite, grassSprite, stoneSprite;
+	if (!planeTexture.loadFromFile("plane.png"))
+		std::cout << "Cannot open from file";
+	sf::Sprite bgsprite, groundSprite, grassSprite, stoneSprite,planeSprite;
 	bgsprite.setTexture(bgtexture);
 	groundSprite.setTexture(groundTexture);
 	grassSprite.setTexture(grassTexture);
 	stoneSprite.setTexture(stoneTexture);
+	planeSprite.setTexture(planeTexture);
 	sf::Vector2u sizeGround = groundTexture.getSize();
 	sf::Vector2u sizeGrass = grassTexture.getSize();
 	sf::Vector2u sizeStone = stoneTexture.getSize();
@@ -27,15 +29,15 @@ int main()
 		{
 			switch (event.type)
 			{
-				// window closed
+	
 			case sf::Event::Closed:
 				window.close();
 				break;
 
-				// key pressed
+				
 
 
-				// we don't process other types of events
+	
 			default:
 				break;
 			}
@@ -69,21 +71,11 @@ int main()
 			window.draw(groundSprite);
 			screenX += sizeGround.x;
 		}
-
+		planeSprite.setPosition(sf::Vector2f(40.0f, 80.0f));
+		window.draw(planeSprite);
 		window.display();
 
 
 	}
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-	{
-			rectangle.move(sf::Vector2f(0.1f, 0.0f));
-			triangle.move(sf::Vector2f(0.1f, 0.0f));
-	}*/
-
-
-
-
-
-
 	return 0;
 }
