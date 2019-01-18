@@ -1,9 +1,11 @@
 #include<iostream>
 #include <SFML/Graphics.hpp>
+#include<SFML/System/Clock.hpp>
 
 
 int main()
 {
+	float planeX = 40.0f, planeY = 80.0f;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SKY BOMBER");
 
 	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture, planeTexture;
@@ -33,11 +35,6 @@ int main()
 			case sf::Event::Closed:
 				window.close();
 				break;
-
-				
-
-
-	
 			default:
 				break;
 			}
@@ -71,7 +68,16 @@ int main()
 			window.draw(groundSprite);
 			screenX += sizeGround.x;
 		}
-		planeSprite.setPosition(sf::Vector2f(40.0f, 80.0f));
+		//check
+		planeSprite.setPosition(sf::Vector2f(planeX, planeY));
+		sf::Clock clk;
+		if (clk.getElapsedTime().asSeconds() > 1.0f)
+		{
+			planeX = planeX + 50.0f;
+			planeSprite.setPosition(sf::Vector2f(planeX, planeY));
+			
+			clk.restart();
+		}
 		window.draw(planeSprite);
 		window.display();
 
