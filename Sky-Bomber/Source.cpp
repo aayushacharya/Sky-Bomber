@@ -6,6 +6,7 @@
 int main()
 {
 	float planeX = 40.0f, planeY = 80.0f;
+	sf::Clock clk;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SKY BOMBER");
 
 	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture, planeTexture;
@@ -70,12 +71,14 @@ int main()
 		}
 		//check
 		planeSprite.setPosition(sf::Vector2f(planeX, planeY));
-		sf::Clock clk;
-		if (clk.getElapsedTime().asSeconds() > 1.0f)
+	
+		if (clk.getElapsedTime().asMicroseconds() > 1.0f)
 		{
-			planeX = planeX + 50.0f;
+			if (planeX > 800)
+				planeX = 0;
+
+			planeX = planeX + 0.5f;
 			planeSprite.setPosition(sf::Vector2f(planeX, planeY));
-			
 			clk.restart();
 		}
 		window.draw(planeSprite);
