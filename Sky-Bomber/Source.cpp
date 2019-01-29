@@ -6,17 +6,23 @@
 int main()
 {
 	float planeX = 40.0f, planeY = 80.0f;
+	float truckX = 700.0f, truckY = 480.0f;
+	float planeOffsetX = 0.5f, truckOffsetX = 0.3f;
 	sf::Clock clk;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SKY BOMBER");
 
 	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture, planeTexture;
+	sf::Texture mTruckTexture;
 	if (!bgtexture.loadFromFile("background.png") || !groundTexture.loadFromFile("ground.png"))
 		std::cout << "Cannot load from file";
 	if (!grassTexture.loadFromFile("grass.png") || !stoneTexture.loadFromFile("stone.png"))
 		std::cout << "Cannot open from file";
 	if (!planeTexture.loadFromFile("plane.png"))
 		std::cout << "Cannot open from file";
-	sf::Sprite bgsprite, groundSprite, grassSprite, stoneSprite,planeSprite;
+	sf::Sprite bgsprite, groundSprite, grassSprite, stoneSprite,planeSprite,mTruckSprite;
+	if (!mTruckTexture.loadFromFile("mtruck.png"))
+		std::cout<<"Cannot load from file";
+	mTruckSprite.setTexture(mTruckTexture);
 	bgsprite.setTexture(bgtexture);
 	groundSprite.setTexture(groundTexture);
 	grassSprite.setTexture(grassTexture);
@@ -25,6 +31,7 @@ int main()
 	sf::Vector2u sizeGround = groundTexture.getSize();
 	sf::Vector2u sizeGrass = grassTexture.getSize();
 	sf::Vector2u sizeStone = stoneTexture.getSize();
+	sf::Vector2u sizemTruck = mTruckTexture.getSize();
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -69,19 +76,39 @@ int main()
 			window.draw(groundSprite);
 			screenX += sizeGround.x;
 		}
-		//check
+		
 		planeSprite.setPosition(sf::Vector2f(planeX, planeY));
-	
+		mTruckSprite.setPosition(sf::Vector2f(truckX, truckY - sizeStone.y - sizeGrass.y - sizemTruck.y));
 		if (clk.getElapsedTime().asMicroseconds() > 1.0f)
 		{
-			if (planeX > 800)
-				planeX = 0;
-
-			planeX = planeX + 0.5f;
+			if (planeX > 780) {
+				planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
+				planeOffsetX = -0.5f;
+			}
+			if (planeX < 0)
+			{
+				planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
+				planeOffsetX = 0.5f;
+			}
+			if (truckX < 0)
+			{
+				mTruckSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
+				truckOffsetX = -0.3f;
+			}
+			if (truckX > 780)
+			{
+				mTruckSprite.setScale(sf::Vector2f(1.0f, 1.0f));
+				truckOffsetX = 0.3f;
+			}
+				
+			planeX = planeX + planeOffsetX;
+			truckX = truckX - truckOffsetX;
 			planeSprite.setPosition(sf::Vector2f(planeX, planeY));
+			mTruckSprite.setPosition(sf::Vector2f(truckX, truckY-sizeStone.y - sizeGrass.y - sizemTruck.y));
 			clk.restart();
 		}
 		window.draw(planeSprite);
+		window.draw(mTruckSprite);
 		window.display();
 
 
