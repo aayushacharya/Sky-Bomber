@@ -9,7 +9,7 @@ int main()
 	
 	float planeX = 40.0f, planeY = 80.0f;
 	float *plane, *planeOffset;
-	
+	float upRotate, downRotate, leftRotate, rightRotate;
 	float truckX = 700.0f, truckY = 480.0f;
 	float tankX = 30.0f, tankY = 480.0f;
 	float planeOffsetX = 0.5f, truckOffsetX = 0.3f;
@@ -133,7 +133,10 @@ int main()
 				//write rotate for this too
 				planeSprite.setRotation(0.0f);
 				planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
-				planeOffsetX = -planeOffsetX;
+				if (planeOffsetX > 0)
+				{
+					planeOffsetX = -planeOffsetX;
+				}
 				plane = &planeX;
 				planeOffset = &planeOffsetX;
 				
@@ -150,7 +153,26 @@ int main()
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-				planeSprite.setRotation(-90.0f);
+				//planeSprite.setRotation(-90.0f);
+				upRotate = planeSprite.getRotation();
+				if ((int)upRotate < 270)
+				{
+					planeSprite.rotate(0.5f);
+					upRotate = planeSprite.getRotation();
+				}
+				if ((int)upRotate > 270)
+				{
+					planeSprite.rotate(-0.5f);
+					upRotate = planeSprite.getRotation();
+				}
+				if ((int)upRotate > 265 && (int)upRotate < 275)
+				{
+					upRotate = 270.0f;
+					upRotate = planeSprite.getRotation();
+
+				}
+				planeSprite.setRotation(upRotate);
+				
 				planeOffsetY = -planeOffsetY;
 				
 				plane = &planeY;
@@ -159,7 +181,25 @@ int main()
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				planeSprite.setRotation(90.0f);
+				//planeSprite.setRotation(90.0f);
+				downRotate=planeSprite.getRotation();
+				if ((int)downRotate < 90)
+				{
+					planeSprite.rotate(0.5f);
+					downRotate = planeSprite.getRotation();
+				}
+				if ((int)downRotate > 90)
+				{
+					planeSprite.rotate(-0.5f);
+					downRotate = planeSprite.getRotation();
+				}
+				if ((int)downRotate > 85 && (int)downRotate<95)
+				{
+					downRotate = 90.0f;
+					downRotate = planeSprite.getRotation();
+					
+				}
+				planeSprite.setRotation(downRotate);			
 				planeOffsetY = fabsf(planeOffsetY);
 				plane = &planeY;
 				planeOffset = &planeOffsetY;
