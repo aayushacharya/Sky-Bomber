@@ -4,29 +4,30 @@
 #include<SFML/System/Clock.hpp>
 float checkBoundary(sf::Sprite&, float,float);
 void velocity(float*, float*);
+void speed();
 int main()
 {
 	
 	float planeX = 40.0f, planeY = 80.0f;
-	float *plane, *planeOffset;
+	float *Xplane,*Yplane,*planeXOffset, *planeYOffset;
 	float upRotate, downRotate;
-	float truckX = 700.0f, truckY = 480.0f;
-	float tankX = 30.0f, tankY = 480.0f;
+	float truckX = 700.0f, truckY = 600.0f;
+	float tankX = 30.0f, tankY = 600.0f;
 	float planeOffsetX = 0.5f, truckOffsetX = 0.3f;
 	float tankOffsetX = 0.4f;
 	float planeOffsetY = 0.5f;
-	plane = &planeX;
-	planeOffset = &planeOffsetX;
+	Xplane = &planeX;
+	planeXOffset = &planeOffsetX;
 	sf::Clock clk;
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SKY BOMBER");
+	sf::RenderWindow window(sf::VideoMode(1366, 768), "SKY BOMBER");
 
 	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture, planeTexture;
 	sf::Texture mTruckTexture,tankTexture;
-	if (!bgtexture.loadFromFile("resources/background.png") || !groundTexture.loadFromFile("resources/ground.png"))
+	if (!bgtexture.loadFromFile("resources/BG.png") || !groundTexture.loadFromFile("resources/ground.png"))
 		std::cout << "Cannot load from file";
 	if (!grassTexture.loadFromFile("resources/grass.png") || !stoneTexture.loadFromFile("resources/stone.png"))
 		std::cout << "Cannot open from file";
-	if (!planeTexture.loadFromFile("resources/plane.png"))
+	if (!planeTexture.loadFromFile("resources/plane3.png"))
 		std::cout << "Cannot open from file";
 	sf::Sprite bgsprite, groundSprite, grassSprite, stoneSprite,planeSprite,mTruckSprite;
 	sf::Sprite tankSprite;
@@ -61,10 +62,10 @@ int main()
 		}
 		window.clear(sf::Color::Black);
 		window.draw(bgsprite);
-		float screenX = 0.0f, screenY = 480.0f;
+		float screenX = 0.0f, screenY = 600.0f;
 		while (1)
 		{
-			if (screenX > 800)
+			if (screenX > 1366)
 			{
 				break;
 			}
@@ -74,12 +75,13 @@ int main()
 			window.draw(stoneSprite);
 			screenX += sizeStone.x;
 		}
+		
 		screenX = 0.0f;
 		while (1)
 		{
-			if (screenX > 800 && screenY > 600)
+			if (screenX > 1366 && screenY > 768)
 				break;
-			if (screenX > 800)
+			if (screenX > 1366)
 			{
 				screenX = 0;
 				screenY += sizeGround.y;
@@ -102,7 +104,7 @@ int main()
 				planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 				planeOffsetX = 0.5f;
 			}
-			if (planeX > 780)
+			if (planeX > 1360)
 			{
 				planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 				planeOffsetX = -0.5f;
@@ -122,7 +124,7 @@ int main()
 				mTruckSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 				truckOffsetX = -0.3f;
 			}
-			if (truckX > 780)
+			if (truckX > 1360)
 			{
 				mTruckSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 				truckOffsetX = 0.3f;
@@ -132,7 +134,7 @@ int main()
 				tankSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 				tankOffsetX = 0.4f;
 			}
-			if (tankX > 780)
+			if (tankX > 1360)
 			{
 				tankSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 				tankOffsetX = -0.4f;
@@ -140,30 +142,30 @@ int main()
 			//check
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
-				
-				planeSprite.setRotation(0.0f);
-				planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
-				if (planeOffsetX > 0)
+				planeSprite.rotate(-0.5f);
+				//planeSprite.setRotation(0.0f);
+				//planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
+				/*if (planeOffsetX > 0)
 				{
 					planeOffsetX = -planeOffsetX;
-				}
-				plane = &planeX;
-				planeOffset = &planeOffsetX;
+				}*/
+				//plane = &planeX;
+				//planeOffset = &planeOffsetX;
 				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
-				
-				planeSprite.setRotation(0.0f);
-				planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
-				planeOffsetX = fabsf(planeOffsetX);
-				plane = &planeX;
-				planeOffset = &planeOffsetX;
+				planeSprite.rotate(0.5f);
+				//planeSprite.setRotation(0.0f);
+				//planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
+				//planeOffsetX = fabsf(planeOffsetX);
+				//Xplane = &planeX;
+				//planeXOffset = &planeOffsetX;
 				
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-			
+				//if planeOffsetX is negative then -90			
 				upRotate = planeSprite.getRotation();
 				if ((int)upRotate < 270)
 				{
@@ -198,8 +200,8 @@ int main()
 				plane = &planeY;
 				planeOffset = &planeOffsetY;
 				
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			}*/
+			/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
 				
 				downRotate=planeSprite.getRotation();
@@ -233,8 +235,11 @@ int main()
 				plane = &planeY;
 				planeOffset = &planeOffsetY;
 				
-			}
-			velocity(plane, planeOffset);
+			}*/
+			planeOffsetX = cos(planeSprite.getRotation())*0.5f;
+			planeOffsetY = sin(planeSprite.getRotation())*0.5f;
+			velocity(&planeX, &planeOffsetX);
+			velocity(&planeY, &planeOffsetY);
 			truckX = truckX - truckOffsetX;
 			tankX = tankX + tankOffsetX;
 			clk.restart();
@@ -251,7 +256,7 @@ int main()
 float checkBoundary(sf::Sprite& s, float offX,float xPos)//check
 {
 	static float X=offX;
-	if (xPos > 780) {
+	if (xPos > 1360) {
 		s.setScale(sf::Vector2f(-1.0f, 1.0f));
 		X = -offX;
 	

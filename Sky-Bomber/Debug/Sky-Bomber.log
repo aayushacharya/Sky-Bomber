@@ -1,2 +1,6 @@
 ﻿  Source.cpp
+e:\sky-bomber\sky-bomber\source.cpp(12): warning C4101: 'planeYOffset': unreferenced local variable
+e:\sky-bomber\sky-bomber\source.cpp(12): warning C4101: 'Yplane': unreferenced local variable
+e:\sky-bomber\sky-bomber\source.cpp(13): warning C4101: 'downRotate': unreferenced local variable
+e:\sky-bomber\sky-bomber\source.cpp(13): warning C4101: 'upRotate': unreferenced local variable
   Sky-Bomber.vcxproj -> E:\Sky-Bomber\Sky-Bomber\Debug\Sky-Bomber.exe
