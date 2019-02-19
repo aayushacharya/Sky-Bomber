@@ -15,11 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Organized\Main.cpp">
+    <ClCompile Include="Source files\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Organized\Animation.cpp">
-      <Filter>Resource Files</Filter>
+    <ClCompile Include="Source files\Animation.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source files\Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Headers\Headers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
