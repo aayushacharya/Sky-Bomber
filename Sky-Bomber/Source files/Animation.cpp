@@ -4,18 +4,26 @@
 #include<SFML/System/Clock.hpp>
 #include<Headers.h>
 void Engine::start() {
+	//inital parameters set
 	float planeX = 40.0f, planeY = 80.0f;
-	//float *Xplane,*Yplane,*planeXOffset, *planeYOffset;
-	//float upRotate, downRotate;
+	/*float *Xplane,*Yplane,*planeXOffset, *planeYOffset;
+	float upRotate, downRotate;*/
 	float truckX = 700.0f, truckY = 600.0f;
 	float tankX = 30.0f, tankY = 600.0f;
 	float planeOffsetX = 5.0f, truckOffsetX = 3.0f;
 	float tankOffsetX = 4.0f;
 	float planeOffsetY = 5.0f;
 	float missileX = planeX, missileY = planeY;
+	
+	//clock for updating game loop
 	sf::Clock clk;
+
+	//window event
 	sf::RenderWindow window(sf::VideoMode(1366, 768), "SKY BOMBER");
+	//window frame limit
 	window.setFramerateLimit(60);
+
+	//texture and sprites for loading images
 	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture, planeTexture;
 	sf::Texture mTruckTexture, tankTexture, missileTexture;
 	if (!bgtexture.loadFromFile("resources/BG.png") || !groundTexture.loadFromFile("resources/ground.png"))
@@ -36,12 +44,14 @@ void Engine::start() {
 	planeSprite.setTexture(planeTexture);
 	tankSprite.setTexture(tankTexture);
 	missileSprite.setTexture(missileTexture);
+	//size of textures
 	sf::Vector2u sizeGround = groundTexture.getSize();
 	sf::Vector2u sizeGrass = grassTexture.getSize();
 	sf::Vector2u sizeStone = stoneTexture.getSize();
 	sf::Vector2u sizemTruck = mTruckTexture.getSize();
 	sf::Vector2u sizeTank = tankTexture.getSize();
 
+	//Game loop
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -58,8 +68,10 @@ void Engine::start() {
 			}
 		}
 		window.clear(sf::Color::Black);
+		//background drawn
 		window.draw(bgsprite);
 		float screenX = 0.0f, screenY = 600.0f;
+		//background setup
 		while (1)
 		{
 			if (screenX > 1366)
@@ -87,16 +99,19 @@ void Engine::start() {
 			window.draw(groundSprite);
 			screenX += sizeGround.x;
 		}
+
+		//set initial position of sprites
 		missileSprite.setPosition(sf::Vector2f(missileX, missileY));
 		planeSprite.setPosition(sf::Vector2f(planeX, planeY));
 		mTruckSprite.setPosition(sf::Vector2f(truckX, truckY - sizeStone.y - sizeGrass.y - sizemTruck.y));
 		tankSprite.setPosition(sf::Vector2f(tankX, tankY - sizeStone.y - sizeGrass.y - sizeTank.y + 5.0f));
-		if (clk.getElapsedTime().asSeconds() > (1.0f / 60.0f))
-		{
-			//planeOffsetX = checkBoundary(planeSprite, planeOffsetX,planeX);
-			//truckOffsetX = checkBoundary(mTruckSprite, truckOffsetX,truckX);
-			//todo boundary conditions check, see if offset is needed
+		
+		
+			
+			
+			
 			//todo plane conditions
+			//plane boundary conditions
 			if (planeX < 0)
 			{
 				planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
@@ -117,6 +132,7 @@ void Engine::start() {
 				planeSprite.setRotation(90.0f);
 				//planeOffsetY = fabsf(planeOffsetY);
 			}
+			//truck boundary conditions
 			if (truckX < 0)
 			{
 				mTruckSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
@@ -127,6 +143,7 @@ void Engine::start() {
 				mTruckSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 				truckOffsetX = fabsf(truckOffsetX);
 			}
+			//tank boundary conditions
 			if (tankX < 0)
 			{
 				tankSprite.setScale(sf::Vector2f(1.0f, 1.0f));
@@ -137,20 +154,20 @@ void Engine::start() {
 				tankSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 				tankOffsetX = -fabsf(tankOffsetX);
 			}
-			//check
+		
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
 				planeSprite.rotate(-3.0f);
 
 
-				//planeSprite.setRotation(0.0f);
-				//planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
-				/*if (planeOffsetX > 0)
+				/*planeSprite.setRotation(0.0f);
+				planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
+				if (planeOffsetX > 0)
 				{
 					planeOffsetX = -planeOffsetX;
-				}*/
-				//plane = &planeX;
-				//planeOffset = &planeOffsetX;
+				}
+				plane = &planeX;
+				planeOffset = &planeOffsetX;*/
 
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -158,11 +175,11 @@ void Engine::start() {
 				planeSprite.rotate(3.0f);
 
 
-				//planeSprite.setRotation(0.0f);
-				//planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
-				//planeOffsetX = fabsf(planeOffsetX);
-				//Xplane = &planeX;
-				//planeXOffset = &planeOffsetX;
+				/*planeSprite.setRotation(0.0f);
+				planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
+				planeOffsetX = fabsf(planeOffsetX);*/
+				
+				
 
 			}
 			/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -238,15 +255,18 @@ void Engine::start() {
 				planeOffset = &planeOffsetY;
 
 			}*/
+
 			//see for boundary condition
+			//trying to do for velocity and failing miserably
 			planeOffsetX = cos(planeSprite.getRotation())*5.0f;
 			planeOffsetY = sin(planeSprite.getRotation())*5.0f;
 			planeX += planeOffsetX;
 			planeY += planeOffsetY;
 			truckX = truckX - truckOffsetX;
 			tankX = tankX + tankOffsetX;
-			clk.restart();
-		}
+			//clk.restart();
+		
+		//draw all the gameobjects according to z-index
 		window.draw(missileSprite);
 		window.draw(planeSprite);
 		window.draw(mTruckSprite);
