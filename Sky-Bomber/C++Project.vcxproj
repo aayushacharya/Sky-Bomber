@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source files\Animation.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Source files\Main.cpp" />
-    <ClCompile Include="Source files\Sprite.cpp" />
+    <ClCompile Include="splashscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\Headers.h" />
+    <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="splashscreen.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
