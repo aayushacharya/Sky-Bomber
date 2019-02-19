@@ -78,7 +78,3 @@ while (window.isOpen())
 	window.display();
 }
 }
-
-
-
-
