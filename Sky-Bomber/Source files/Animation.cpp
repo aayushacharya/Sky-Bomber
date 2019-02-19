@@ -8,12 +8,13 @@ void Engine::start() {
 	float planeX = 40.0f, planeY = 80.0f;
 	/*float *Xplane,*Yplane,*planeXOffset, *planeYOffset;
 	float upRotate, downRotate;*/
-	float truckX = 700.0f, truckY = 600.0f;
-	float tankX = 30.0f, tankY = 600.0f;
+	float truckX = 700.0f, truckY = 680.0f;
+	float tankX = 30.0f, tankY = 680.0f;
 	float planeOffsetX = 5.0f, truckOffsetX = 3.0f;
 	float tankOffsetX = 4.0f;
 	float planeOffsetY = 5.0f;
 	float missileX = planeX, missileY = planeY;
+	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetX;
 	
 	//clock for updating game loop
 	sf::Clock clk;
@@ -24,30 +25,30 @@ void Engine::start() {
 	window.setFramerateLimit(60);
 
 	//texture and sprites for loading images
-	sf::Texture bgtexture, groundTexture, grassTexture, stoneTexture, planeTexture;
+	sf::Texture bgtexture,  planeTexture; //groundTexture, grassTexture, stoneTexture;
 	sf::Texture mTruckTexture, tankTexture, missileTexture;
-	if (!bgtexture.loadFromFile("resources/BG.png") || !groundTexture.loadFromFile("resources/ground.png"))
+	if (!bgtexture.loadFromFile("resources/background.png") ) //|| !groundTexture.loadFromFile("resources/ground.png")
 		std::cout << "Cannot load from file";
-	if (!grassTexture.loadFromFile("resources/grass.png") || !stoneTexture.loadFromFile("resources/stone.png"))
-		std::cout << "Cannot open from file";
-	if (!planeTexture.loadFromFile("resources/plane3.png") || !missileTexture.loadFromFile("resources/missile.png"))
+//	if (!grassTexture.loadFromFile("resources/grass.png") || !stoneTexture.loadFromFile("resources/stone.png"))
+	//	std::cout << "Cannot open from file";
+	if (!planeTexture.loadFromFile("resources/plane1.png") || !missileTexture.loadFromFile("resources/missile.png"))
 		std::cout << "Cannot open from file";
 	if (!mTruckTexture.loadFromFile("resources/mtruck.png") || !tankTexture.loadFromFile("resources/tank.png"))
 		std::cout << "Cannot load from file";
-	sf::Sprite bgsprite, groundSprite, grassSprite, stoneSprite, planeSprite, mTruckSprite;
+	sf::Sprite bgsprite, planeSprite, mTruckSprite; //, groundSprite, grassSprite, stoneSprite
 	sf::Sprite tankSprite, missileSprite;
 	mTruckSprite.setTexture(mTruckTexture);
 	bgsprite.setTexture(bgtexture);
-	groundSprite.setTexture(groundTexture);
+	/*groundSprite.setTexture(groundTexture);
 	grassSprite.setTexture(grassTexture);
-	stoneSprite.setTexture(stoneTexture);
+	stoneSprite.setTexture(stoneTexture);*/
 	planeSprite.setTexture(planeTexture);
 	tankSprite.setTexture(tankTexture);
 	missileSprite.setTexture(missileTexture);
 	//size of textures
-	sf::Vector2u sizeGround = groundTexture.getSize();
+	/*sf::Vector2u sizeGround = groundTexture.getSize();
 	sf::Vector2u sizeGrass = grassTexture.getSize();
-	sf::Vector2u sizeStone = stoneTexture.getSize();
+	sf::Vector2u sizeStone = stoneTexture.getSize();*/
 	sf::Vector2u sizemTruck = mTruckTexture.getSize();
 	sf::Vector2u sizeTank = tankTexture.getSize();
 
@@ -72,7 +73,7 @@ void Engine::start() {
 		window.draw(bgsprite);
 		float screenX = 0.0f, screenY = 600.0f;
 		//background setup
-		while (1)
+		/*while (1)
 		{
 			if (screenX > 1366)
 			{
@@ -93,18 +94,20 @@ void Engine::start() {
 			if (screenX > 1366)
 			{
 				screenX = 0;
-				screenY += sizeGround.y;
+				//screenY += sizeGround.y;
+				screenY = 0;
 			}
 			groundSprite.setPosition(sf::Vector2f(screenX, screenY));
 			window.draw(groundSprite);
-			screenX += sizeGround.x;
+			//screenX += sizeGround.x;
 		}
+		*/
 
 		//set initial position of sprites
 		missileSprite.setPosition(sf::Vector2f(missileX, missileY));
 		planeSprite.setPosition(sf::Vector2f(planeX, planeY));
-		mTruckSprite.setPosition(sf::Vector2f(truckX, truckY - sizeStone.y - sizeGrass.y - sizemTruck.y));
-		tankSprite.setPosition(sf::Vector2f(tankX, tankY - sizeStone.y - sizeGrass.y - sizeTank.y + 5.0f));
+		mTruckSprite.setPosition(sf::Vector2f(truckX, truckY - sizemTruck.y));
+		tankSprite.setPosition(sf::Vector2f(tankX, tankY - sizeTank.y + 5.0f));
 		
 		
 			
@@ -115,21 +118,28 @@ void Engine::start() {
 			if (planeX < 0)
 			{
 				planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
-				//planeOffsetX = fabsf(planeOffsetX);
+				missileSprite.setScale(sf::Vector2f(1.0f, 1.0f));
+
+				planeOffsetX = fabsf(planeOffsetX);
+				missileOffsetX = fabsf(missileOffsetX);
 			}
 			if (planeX > 1360)
 			{
 				planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
-				//planeOffsetX = -fabsf(planeOffsetX);
+				missileSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
+				planeOffsetX = -fabsf(planeOffsetX);
+				missileOffsetX = -fabsf(missileOffsetX);
 			}
-			if (planeY > (screenY - sizeGround.y - sizeStone.y - sizeGrass.y - 180.0f))
+			if (planeY > (screenY  - 180.0f))
 			{
 				planeSprite.setRotation(270.0f);
+				missileSprite.setRotation(270.0f);
 				//planeOffsetY = -fabsf(planeOffsetY);
 			}
 			if (planeY < 0)
 			{
 				planeSprite.setRotation(90.0f);
+				missileSprite.setRotation(90.0f);
 				//planeOffsetY = fabsf(planeOffsetY);
 			}
 			//truck boundary conditions
@@ -158,6 +168,7 @@ void Engine::start() {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
 				planeSprite.rotate(-3.0f);
+				missileSprite.rotate(-3.0f);
 
 
 				/*planeSprite.setRotation(0.0f);
@@ -173,6 +184,7 @@ void Engine::start() {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
 				planeSprite.rotate(3.0f);
+				missileSprite.rotate(3.0f);
 
 
 				/*planeSprite.setRotation(0.0f);
@@ -258,12 +270,17 @@ void Engine::start() {
 
 			//see for boundary condition
 			//trying to do for velocity and failing miserably
-			planeOffsetX = cos(planeSprite.getRotation())*5.0f;
+			//planeOffsetX = cos(planeSprite.getRotation())*5.0f;
+			//missileOffsetX = cos(missileSprite.getRotation())*5.0f;
 			planeOffsetY = sin(planeSprite.getRotation())*5.0f;
+			missileOffsetY = sin(missileSprite.getRotation())*5.0f;
 			planeX += planeOffsetX;
 			planeY += planeOffsetY;
 			truckX = truckX - truckOffsetX;
 			tankX = tankX + tankOffsetX;
+			missileX += missileOffsetX;
+			missileY += missileOffsetY;
+				
 			//clk.restart();
 		
 		//draw all the gameobjects according to z-index
