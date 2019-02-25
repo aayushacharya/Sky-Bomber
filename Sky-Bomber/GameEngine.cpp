@@ -1,7 +1,8 @@
 #include "../GameEngine.h"
 #include "../Missile.h"
 #include "../Collision.h"
-#include "../Explosion.h"
+#include "SFML/Audio.hpp"
+#include "Explosion.h"
 void Engine::start() {
 	//inital parameters set
 	float planeX = 40.0f, planeY = 80.0f;
@@ -20,11 +21,30 @@ void Engine::start() {
 	//clock for updating game loop
 	sf::Clock clk;
 
+	sf::Music launching, ingamemusic, planesound;
+	
+
+
+	if (!launching.openFromFile("resources/Missilelunched.wav"))
+		std::cout << "can't find sound" << std::endl;
+	if (!planesound.openFromFile("resources/planesound.wav"))
+		std::cout << "can't find sound" << std::endl;
+
+	if (!ingamemusic.openFromFile("resources/ingame.wav"))
+		std::cout << "not working" << std::endl;	
+
+	ingamemusic.setVolume(10.0f);
+
 	//window event
 	sf::RenderWindow window(sf::VideoMode(1366, 768), "SKY BOMBER");
-	//window frame limit
+	//application icon doesnot work code is below
+	/*sf::Image icon;
+	icon.loadFromFile("resources/plane3.png"); // File/Image/Pixel
+	window.setIcon(30,30);	*/
 	window.setFramerateLimit(60);
 
+	ingamemusic.play();
+	planesound.play();
 	//texture and sprites for loading images
 	sf::Texture bgtexture, planeTexture; //groundTexture, grassTexture, stoneTexture;
 	sf::Texture mTruckTexture, tankTexture, missileTexture;
@@ -40,16 +60,10 @@ void Engine::start() {
 	sf::Sprite tankSprite, missileSprite;
 	mTruckSprite.setTexture(mTruckTexture);
 	bgsprite.setTexture(bgtexture);
-	/*groundSprite.setTexture(groundTexture);
-	grassSprite.setTexture(grassTexture);
-	stoneSprite.setTexture(stoneTexture);*/
 	planeSprite.setTexture(planeTexture);
 	tankSprite.setTexture(tankTexture);
 	missileSprite.setTexture(missileTexture);
-	//size of textures
-	/*sf::Vector2u sizeGround = groundTexture.getSize();
-	sf::Vector2u sizeGrass = grassTexture.getSize();
-	sf::Vector2u sizeStone = stoneTexture.getSize();*/
+
 	sf::Vector2u sizemTruck = mTruckTexture.getSize();
 	sf::Vector2u sizeTank = tankTexture.getSize();
 
@@ -73,43 +87,11 @@ void Engine::start() {
 		//background drawn
 		window.draw(bgsprite);
 		float screenX = 0.0f, screenY = 600.0f;
-		//background setup
-		/*while (1)
-		{
-			if (screenX > 1366)
-			{
-				break;
-			}
-			grassSprite.setPosition(sf::Vector2f(screenX, screenY - sizeGrass.y));
-			stoneSprite.setPosition(sf::Vector2f(screenX, screenY - sizeStone.y - sizeGrass.y));
-			window.draw(grassSprite);
-			window.draw(stoneSprite);
-			screenX += sizeStone.x;
-		}
-		screenX = 0.0f;
-		while (1)
-		{
-			if (screenX > 1366 && screenY > 768)
-				break;
-			if (screenX > 1366)
-			{
-				screenX = 0;
-				//screenY += sizeGround.y;
-				screenY = 0;
-			}
-			groundSprite.setPosition(sf::Vector2f(screenX, screenY));
-			window.draw(groundSprite);
-			//screenX += sizeGround.x;
-		}
-		*/
 
-		//set initial position of sprites
 		missileSprite.setPosition(sf::Vector2f(missileX, missileY));
 		planeSprite.setPosition(sf::Vector2f(planeX, planeY));
 		mTruckSprite.setPosition(sf::Vector2f(truckX, truckY - sizemTruck.y));
 		tankSprite.setPosition(sf::Vector2f(tankX, tankY - sizeTank.y + 5.0f));
-
-
 
 
 
@@ -165,8 +147,8 @@ void Engine::start() {
 			tankSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 			tankOffsetX = -fabsf(tankOffsetX);
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		//when down key is pressed 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			planeSprite.rotate(-3.0f);
 			missileSprite.rotate(-3.0f);
@@ -182,27 +164,39 @@ void Engine::start() {
 			planeOffset = &planeOffsetX;*/
 
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		//when up arrow key is pressed 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			planeSprite.rotate(3.0f);
 			missileSprite.rotate(3.0f);
-
-
 			/*planeSprite.setRotation(0.0f);
 			planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 			planeOffsetX = fabsf(planeOffsetX);*/
-
-
-
+		}
+		//whe escape is pressed game wil be exited
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		{
+			
+			window.close();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
+			ingamemusic.pause();
+			planesound.pause();
+			window.close();
 			Game::start();
+
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			
+			launching.play();
 			missileLaunched = true;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		{
+			planesound.pause();
+			window.close();
+			Engine::start();
 		}
 		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
@@ -288,18 +282,11 @@ void Engine::start() {
 		if (missileLaunched)
 		{
 			Missile::move(&missileSprite, &missileY,planePosition);
+			window.draw(missileSprite);
 		}
 		if (!missileLaunched)
 		{
 			missileY += missileOffsetY;
-		}
-		if (missileY > tankY)
-		{
-			missileSprite.setRotation(planeSprite.getRotation());
-			missileSprite.setPosition(missileX, missileY);
-
-			missileY = planeY;
-			missileLaunched = false;
 		}
 		//clk.restart();
 
