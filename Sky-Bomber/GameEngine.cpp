@@ -1,6 +1,7 @@
 #include "../GameEngine.h"
 #include "../Missile.h"
 #include "../Collision.h"
+#include "../Explosion.h"
 void Engine::start() {
 	//inital parameters set
 	float planeX = 40.0f, planeY = 80.0f;
@@ -292,6 +293,14 @@ void Engine::start() {
 		{
 			missileY += missileOffsetY;
 		}
+		if (missileY > tankY)
+		{
+			missileSprite.setRotation(planeSprite.getRotation());
+			missileSprite.setPosition(missileX, missileY);
+
+			missileY = planeY;
+			missileLaunched = false;
+		}
 		//clk.restart();
 
 	//draw all the gameobjects according to z-index
@@ -301,6 +310,18 @@ void Engine::start() {
 		if(Collision::Detect(&missileSprite,&mTruckSprite))
 		{
 			truckCollision = true;
+		}
+		if (truckCollision)
+		{
+			sf::Clock explosionTime;
+			if(explosionTime.getElapsedTime().asSeconds() < 3.0f)
+			{
+				Explosion::Create(truckX, truckY,window);
+				
+			}
+			else {
+				explosionTime.restart();
+			}
 		}
 		if (!truckCollision)
 		{

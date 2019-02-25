@@ -1,8 +1,8 @@
 #include "../Missile.h"
 #include <SFML/Graphics.hpp>
 #include<iostream>
-void Missile::move(sf::Sprite* s,float *y,std::string pos) {
-	static float acc=0.0f;
+void Missile::move(sf::Sprite* s,float *velocityY,std::string pos) {
+	static float gt=0.0f;
 	float angle;
 	float offset=5.0f;
 	if (pos == "right")
@@ -27,6 +27,10 @@ void Missile::move(sf::Sprite* s,float *y,std::string pos) {
 	}
 	
 
-	*y = *y + acc;
-	acc += 0.1f;
+	*velocityY = *velocityY + gt;
+	gt += 0.1f;
+	if (*velocityY > 680.0f)
+	{
+		gt = 0.0f;
+	}
 }
