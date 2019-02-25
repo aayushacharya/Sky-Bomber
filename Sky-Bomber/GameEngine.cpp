@@ -310,17 +310,19 @@ void Engine::start() {
 		if(Collision::Detect(&missileSprite,&mTruckSprite))
 		{
 			truckCollision = true;
+			Explosion::Create(truckX, truckY, window);
+			truckOffsetX = 0;
 		}
 		if (truckCollision)
 		{
-			sf::Clock explosionTime;
-			if(explosionTime.getElapsedTime().asSeconds() < 3.0f)
-			{
-				Explosion::Create(truckX, truckY,window);
-				
-			}
-			else {
-				explosionTime.restart();
+			sf::Clock animationTime;
+			if (animationTime.getElapsedTime().asSeconds() < 10.0f) {
+				sf::Clock explosionTime;
+				if (explosionTime.getElapsedTime().asSeconds() > (10.0f / 12.0f))
+				{
+					Explosion::Create(truckX, truckY, window);
+					explosionTime.restart();
+				}
 			}
 		}
 		if (!truckCollision)
