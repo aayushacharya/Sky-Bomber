@@ -1,18 +1,29 @@
 #include "../Missile.h"
 #include <SFML/Graphics.hpp>
-void Missile::move(sf::Sprite* s,float *y) {
+#include<iostream>
+void Missile::move(sf::Sprite* s,float *y,std::string pos) {
 	static float acc=0.0f;
-	if (s->getRotation() < 90)
+	float angle;
+	float offset=5.0f;
+	if (pos == "right")
 	{
-		s->rotate(5.0f);
+		angle = 90.0f;
 	}
-	else if (s->getRotation() > 90)
+	if (pos == "left")
 	{
-		s->rotate(-5.0f);
+		angle = 270.0f;
 	}
-	else if (s->getRotation() > 75 && s->getRotation() < 105)
+	if (s->getRotation() < angle)
 	{
-		s->setRotation(90.0f);
+		s->rotate(offset);
+	}
+	else if (s->getRotation() > angle)
+	{
+		s->rotate(-offset);
+	}
+	else if (s->getRotation() > (angle-15) && s->getRotation() < (angle+15))
+	{
+		s->setRotation(angle);
 	}
 	
 

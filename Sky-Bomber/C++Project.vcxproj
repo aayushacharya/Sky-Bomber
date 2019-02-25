@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="splashscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Missile.h" />

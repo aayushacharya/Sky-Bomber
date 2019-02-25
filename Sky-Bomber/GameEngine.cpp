@@ -1,5 +1,6 @@
 #include "../GameEngine.h"
 #include "../Missile.h"
+#include "../Collision.h"
 void Engine::start() {
 	//inital parameters set
 	float planeX = 40.0f, planeY = 80.0f;
@@ -13,7 +14,8 @@ void Engine::start() {
 	float missileX = planeX, missileY = planeY;
 	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetX;
 	bool missileLaunched = false;
-
+	bool truckCollision = false;
+	std::string planePosition = "right";
 	//clock for updating game loop
 	sf::Clock clk;
 
@@ -116,7 +118,7 @@ void Engine::start() {
 		{
 			planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 			missileSprite.setScale(sf::Vector2f(1.0f, 1.0f));
-
+			planePosition = "right";
 			planeOffsetX = fabsf(planeOffsetX);
 			missileOffsetX = fabsf(missileOffsetX);
 		}
@@ -124,6 +126,7 @@ void Engine::start() {
 		{
 			planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 			missileSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
+			planePosition = "left";
 			planeOffsetX = -fabsf(planeOffsetX);
 			missileOffsetX = -fabsf(missileOffsetX);
 		}
@@ -283,7 +286,7 @@ void Engine::start() {
 		missileX += missileOffsetX;
 		if (missileLaunched)
 		{
-			Missile::move(&missileSprite, &missileY);
+			Missile::move(&missileSprite, &missileY,planePosition);
 		}
 		if (!missileLaunched)
 		{
@@ -294,7 +297,15 @@ void Engine::start() {
 	//draw all the gameobjects according to z-index
 		window.draw(missileSprite);
 		window.draw(planeSprite);
-		window.draw(mTruckSprite);
+		
+		if(Collision::Detect(&missileSprite,&mTruckSprite))
+		{
+			truckCollision = true;
+		}
+		if (!truckCollision)
+		{
+			window.draw(mTruckSprite);
+		}
 		window.draw(tankSprite);
 		window.display();
 
