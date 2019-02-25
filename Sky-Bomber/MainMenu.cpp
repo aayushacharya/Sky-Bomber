@@ -1,28 +1,30 @@
 #include "../MainMenu.h"
+#include <SFML/Audio.hpp>
 
 Menu::Menu(float width, float height)
 {
-	
-	if (!font.loadFromFile("resources/arial.ttf"))
+
+
+	if (!font.loadFromFile("resources/mainmenufont.ttf"))
 	{
 		std::cout << "Loading Failed" << std::endl;
 	}
 
 	menu[0].setFont(font);
 	menu[0].setColor(sf::Color::White);
-	menu[0].setString("Start Game");
+	menu[0].setString("START GAME");
 	menu[0].setScale(2,2);
 	menu[0].setPosition(sf::Vector2f(width / 8, height /  3));
 
 	menu[1].setFont(font);
 	menu[1].setColor(sf::Color::White);
-	menu[1].setString("HighScores");
+	menu[1].setString("HIGHSCORE");
 	menu[1].setScale(2,2);
 	menu[1].setPosition(sf::Vector2f(width / 8, height /  2));
 
 	menu[2].setFont(font);
 	menu[2].setColor(sf::Color::White);
-	menu[2].setString("Exit");
+	menu[2].setString("EXIT");
 	menu[2].setScale(2,2);
 	menu[2].setPosition(sf::Vector2f(width / 8, height /  1.5));
 
