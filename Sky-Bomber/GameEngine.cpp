@@ -1,4 +1,5 @@
-#include "GameEngine.h"
+#include "../GameEngine.h"
+#include "../Missile.h"
 void Engine::start() {
 	//inital parameters set
 	float planeX = 40.0f, planeY = 80.0f;
@@ -11,6 +12,7 @@ void Engine::start() {
 	float planeOffsetY = 5.0f;
 	float missileX = planeX, missileY = planeY;
 	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetX;
+	bool missileLaunched = false;
 
 	//clock for updating game loop
 	sf::Clock clk;
@@ -193,6 +195,11 @@ void Engine::start() {
 		{
 			Game::start();
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			
+			missileLaunched = true;
+		}
 		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			//if planeOffsetX is negative then -90
@@ -272,9 +279,16 @@ void Engine::start() {
 		planeY += planeOffsetY;
 		truckX = truckX - truckOffsetX;
 		tankX = tankX + tankOffsetX;
+		
 		missileX += missileOffsetX;
-		missileY += missileOffsetY;
-
+		if (missileLaunched)
+		{
+			Missile::move(&missileSprite, &missileY);
+		}
+		if (!missileLaunched)
+		{
+			missileY += missileOffsetY;
+		}
 		//clk.restart();
 
 	//draw all the gameobjects according to z-index

@@ -22,12 +22,14 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Source files\Main.cpp" />
     <ClCompile Include="splashscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="splashscreen.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
