@@ -13,8 +13,6 @@ int main()
                  \n     Nirajan Basnet 074BCT522 "<<endl;
 
 	Splash::start();
-	Game::start();
-	Engine::start();
 }
 
 
