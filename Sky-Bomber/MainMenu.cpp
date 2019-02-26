@@ -11,7 +11,7 @@ Menu::Menu(float width, float height)
 	}
 
 	menu[0].setFont(font);
-	menu[0].setColor(sf::Color::White);
+	menu[0].setColor(sf::Color::Green);
 	menu[0].setString("START GAME");
 	menu[0].setScale(2,2);
 	menu[0].setPosition(sf::Vector2f(width / 8, height /  3));
@@ -50,7 +50,7 @@ void Menu::MoveUp()
 	{
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex--;
-		menu[selectedItemIndex].setColor(sf::Color::Black);
+		menu[selectedItemIndex].setColor(sf::Color::Green);
 	}
 }
 
@@ -60,6 +60,6 @@ void Menu::MoveDown()
 	{
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex++;
-		menu[selectedItemIndex].setColor(sf::Color::Black);
+		menu[selectedItemIndex].setColor(sf::Color::Green);
 	}
 }
