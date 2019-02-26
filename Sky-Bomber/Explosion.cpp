@@ -1,9 +1,11 @@
 #include "../Explosion.h"
 #include<iostream>
 #include <SFML/Graphics.hpp>
-void Explosion::Create(float ObjX,float ObjY,sf::RenderWindow& window)
+void Explosion::Create(float ObjX,float ObjY,sf::RenderWindow& window,std::string GameObj)
 {
-	float xPos=ObjX, yPos=ObjY;
+	float xPos = ObjX;
+	float yPos=ObjY;
+	static std::string ObjName=GameObj;
 	sf::Texture explosionText;
 	if (!explosionText.loadFromFile("resources/explosion.png"))
 	{
@@ -11,11 +13,12 @@ void Explosion::Create(float ObjX,float ObjY,sf::RenderWindow& window)
 	}
 	int width=64;
 	int height = 64;
-	int counter = 0;
-	static int x, y;
-	x = 0, y = 0;
+	static int counter = 0;
+	static int x = 0;
+	static int y = 0;
 	sf::Sprite explosionSprite(explosionText,sf::IntRect(x, y, width, height));
 	explosionSprite.setPosition(sf::Vector2f(xPos, yPos-50.0f));
+	window.draw(explosionSprite);
 	x += width;
 	if (x > (64*4))
 	{
@@ -23,11 +26,18 @@ void Explosion::Create(float ObjX,float ObjY,sf::RenderWindow& window)
 		y += 64;
 		counter++;
 	}
-	if (counter == 3)
+	if (counter > 2)
 	{
-		counter = 0;
-		x = 0;
-		y = 0;
+		if (ObjName == GameObj)
+		{
+		}
+		else
+		{
+			ObjName = GameObj;
+			counter = 0;
+			x = 0;
+			y = 0;
+		}
 	}
-	window.draw(explosionSprite);
+	
 }

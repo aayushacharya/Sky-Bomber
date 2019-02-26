@@ -15,12 +15,16 @@ void Engine::start() {
 	float planeOffsetY = 5.0f;
 	float missileX = planeX, missileY = planeY;
 	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetX;
+	float truck_CollisionX, truck_CollisionY;
+	float tank_CollisionX, tank_CollisionY;
 	bool missileLaunched = false;
 	bool truckCollision = false;
+	bool tankCollision = false;
 	std::string planePosition = "right";
 	//clock for updating game loop
 	sf::Clock clk;
-
+	sf::Clock animationTime;
+	sf::Clock explosionTime;
 	sf::Music launching, ingamemusic, planesound;
 	
 
@@ -288,6 +292,14 @@ void Engine::start() {
 		{
 			missileY += missileOffsetY;
 		}
+		if (missileY > tankY)
+		{
+			missileSprite.setRotation(planeSprite.getRotation());
+			missileSprite.setPosition(missileX, missileY);
+
+			missileY = planeY;
+			missileLaunched = false;
+		}
 		//clk.restart();
 
 	//draw all the gameobjects according to z-index
@@ -296,27 +308,43 @@ void Engine::start() {
 		
 		if(Collision::Detect(&missileSprite,&mTruckSprite))
 		{
+			tankCollision = false;
+			truck_CollisionX=truckX, truck_CollisionY=truckY;
 			truckCollision = true;
-			Explosion::Create(truckX, truckY, window);
+			Explosion::Create(truck_CollisionX, truck_CollisionY, window,"truck");
 			truckOffsetX = 0;
+			truckX = -100;
+			
 		}
 		if (truckCollision)
 		{
-			sf::Clock animationTime;
-			if (animationTime.getElapsedTime().asSeconds() < 10.0f) {
-				sf::Clock explosionTime;
-				if (explosionTime.getElapsedTime().asSeconds() > (10.0f / 12.0f))
-				{
-					Explosion::Create(truckX, truckY, window);
-					explosionTime.restart();
-				}
-			}
+			
+			Explosion::Create(truck_CollisionX, truck_CollisionY, window,"truck");
+			
 		}
 		if (!truckCollision)
 		{
 			window.draw(mTruckSprite);
 		}
-		window.draw(tankSprite);
+		if (Collision::Detect(&missileSprite, &tankSprite))
+		{
+			tank_CollisionX = tankX, tank_CollisionY = tankY;
+			tankCollision = true;
+			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
+			tankOffsetX = 0;
+			tankX = -100;
+			truckCollision = false;
+		}
+		if (tankCollision)
+		{
+			
+			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
+
+		}
+		if (!tankCollision)
+		{
+			window.draw(tankSprite);
+		}
 		window.display();
 
 
