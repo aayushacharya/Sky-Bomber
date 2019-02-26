@@ -25,8 +25,8 @@ void Engine::start() {
 	sf::Clock clk;
 	sf::Clock animationTime;
 	sf::Clock explosionTime;
-	sf::Music launching, ingamemusic, planesound;
-	
+	sf::Music launching, ingamemusic, planesound, explosion;
+
 
 
 	if (!launching.openFromFile("resources/Missilelunched.wav"))
@@ -35,7 +35,9 @@ void Engine::start() {
 		std::cout << "can't find sound" << std::endl;
 
 	if (!ingamemusic.openFromFile("resources/ingame.wav"))
-		std::cout << "not working" << std::endl;	
+		std::cout << "not working" << std::endl;
+	if (!explosion.openFromFile("resources/Explosion.wav"))
+		std::cout << "sound not streamed" << std::endl;
 
 	ingamemusic.setVolume(10.0f);
 
@@ -180,7 +182,7 @@ void Engine::start() {
 		//whe escape is pressed game wil be exited
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 		{
-			
+
 			window.close();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -281,11 +283,11 @@ void Engine::start() {
 		planeY += planeOffsetY;
 		truckX = truckX - truckOffsetX;
 		tankX = tankX + tankOffsetX;
-		
+
 		missileX += missileOffsetX;
 		if (missileLaunched)
 		{
-			Missile::move(&missileSprite, &missileY,planePosition);
+			Missile::move(&missileSprite, &missileY, planePosition);
 			window.draw(missileSprite);
 		}
 		if (!missileLaunched)
@@ -305,22 +307,24 @@ void Engine::start() {
 	//draw all the gameobjects according to z-index
 		window.draw(missileSprite);
 		window.draw(planeSprite);
-		
-		if(Collision::Detect(&missileSprite,&mTruckSprite))
+
+		if (Collision::Detect(&missileSprite, &mTruckSprite))
 		{
 			tankCollision = false;
-			truck_CollisionX=truckX, truck_CollisionY=truckY;
+			truck_CollisionX = truckX, truck_CollisionY = truckY;
 			truckCollision = true;
-			Explosion::Create(truck_CollisionX, truck_CollisionY, window,"truck");
+			Explosion::Create(truck_CollisionX, truck_CollisionY, window, "truck");
+			explosion.play();
 			truckOffsetX = 0;
 			truckX = -100;
-			
+
 		}
 		if (truckCollision)
 		{
+
+			Explosion::Create(truck_CollisionX, truck_CollisionY, window, "truck");
 			
-			Explosion::Create(truck_CollisionX, truck_CollisionY, window,"truck");
-			
+
 		}
 		if (!truckCollision)
 		{
@@ -331,13 +335,14 @@ void Engine::start() {
 			tank_CollisionX = tankX, tank_CollisionY = tankY;
 			tankCollision = true;
 			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
+			explosion.play();
 			tankOffsetX = 0;
 			tankX = -100;
 			truckCollision = false;
 		}
 		if (tankCollision)
 		{
-			
+
 			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
 
 		}
