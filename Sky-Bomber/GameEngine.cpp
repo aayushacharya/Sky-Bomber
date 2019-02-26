@@ -3,16 +3,20 @@
 #include "../Collision.h"
 #include "SFML/Audio.hpp"
 #include "Explosion.h"
+#include "HUD.h"
 void Engine::start() {
+
 	//inital parameters set
-	float planeX = 40.0f, planeY = 80.0f;
-	/*float *Xplane,*Yplane,*planeXOffset, *planeYOffset;
-	float upRotate, downRotate;*/
-	float truckX = 700.0f, truckY = 680.0f;
-	float tankX = 30.0f, tankY = 680.0f;
-	float planeOffsetX = 5.0f, truckOffsetX = 3.0f;
+	float planeX = 40.0f, planeY = 100.0f;
+	float truckX = 700.0f, truckY = 680.0f; //673 would be better for proper placement
+	float tankX = 30.0f, tankY = 680.0f;	//665 would be better for proper placement
+	float planeOffsetX = 5.0f;
+	float truckOffsetX = 3.0f;
 	float tankOffsetX = 4.0f;
 	float planeOffsetY = 5.0f;
+	float hudX = 102.0f, hudY = 0.0f;
+	float planelifeX =52.0f, planelifeY = 40.0f;
+	float fueliconX = 1265.0f, fueliconY = 40.0f;
 	float missileX = planeX, missileY = planeY;
 	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetX;
 	float truck_CollisionX, truck_CollisionY;
@@ -20,58 +24,82 @@ void Engine::start() {
 	bool missileLaunched = false;
 	bool truckCollision = false;
 	bool tankCollision = false;
+	
+
 	std::string planePosition = "right";
-	//clock for updating game loop
 	sf::Clock clk;
 	sf::Clock animationTime;
 	sf::Clock explosionTime;
+
+	//Making Objects for Music class
 	sf::Music launching, ingamemusic, planesound, explosion;
 
 
-
+	//Loading Sounds actually its not loading it is streaming good for memory management
 	if (!launching.openFromFile("resources/Missilelunched.wav"))
 		std::cout << "can't find sound" << std::endl;
 	if (!planesound.openFromFile("resources/planesound.wav"))
 		std::cout << "can't find sound" << std::endl;
-
 	if (!ingamemusic.openFromFile("resources/ingame.wav"))
 		std::cout << "not working" << std::endl;
 	if (!explosion.openFromFile("resources/Explosion.wav"))
 		std::cout << "sound not streamed" << std::endl;
 
-	ingamemusic.setVolume(10.0f);
+
 
 	//window event
-	sf::RenderWindow window(sf::VideoMode(1366, 768), "SKY BOMBER");
-	//application icon doesnot work code is below
-	/*sf::Image icon;
-	icon.loadFromFile("resources/plane3.png"); // File/Image/Pixel
-	window.setIcon(30,30);	*/
+	sf::RenderWindow window(sf::VideoMode(1366, 768), "SKY BOMBER", sf::Style::Fullscreen);
 	window.setFramerateLimit(60);
 
+	//Playing Music on Background
 	ingamemusic.play();
 	planesound.play();
-	//texture and sprites for loading images
-	sf::Texture bgtexture, planeTexture; //groundTexture, grassTexture, stoneTexture;
-	sf::Texture mTruckTexture, tankTexture, missileTexture;
-	if (!bgtexture.loadFromFile("resources/background.png")) //|| !groundTexture.loadFromFile("resources/ground.png")
-		std::cout << "Cannot load from file";
-	//	if (!grassTexture.loadFromFile("resources/grass.png") || !stoneTexture.loadFromFile("resources/stone.png"))
-		//	std::cout << "Cannot open from file";
-	if (!planeTexture.loadFromFile("resources/plane1.png") || !missileTexture.loadFromFile("resources/missile.png"))
-		std::cout << "Cannot open from file";
-	if (!mTruckTexture.loadFromFile("resources/mtruck.png") || !tankTexture.loadFromFile("resources/tank.png"))
-		std::cout << "Cannot load from file";
-	sf::Sprite bgsprite, planeSprite, mTruckSprite; //, groundSprite, grassSprite, stoneSprite
-	sf::Sprite tankSprite, missileSprite;
+	planesound.setLoop(true); //Looping For Continuous Sound
+	
+	//Textures 
+	sf::Texture bgtexture,hud, planeTexture, fuel, planelife, mTruckTexture, tankTexture, missileTexture;
+	
+
+	
+	//Loading Textures
+	if (!planelife.loadFromFile("resources/planelifeicon.png"))						//Life Texture
+		std::cout << "Cannot load from file" <<std::endl;
+	if (!hud.loadFromFile("resources/HUD.png"))										//HUD Texture
+		std::cout << "Cannot load from file" << std::endl;
+	if (!fuel.loadFromFile("resources/fuel.png"))								//Fuel Icon
+		std::cout << "Cannot load form file" << std::endl;
+	if (!bgtexture.loadFromFile("resources/background.png"))						//Main Background
+		std::cout << "Cannot load form file" << std::endl;
+	if (!planeTexture.loadFromFile("resources/plane1.png"))							//Plane Texture
+		std::cout << "Cannot load form file" << std::endl;
+	if(!missileTexture.loadFromFile("resources/missile.png"))						//Missile Texture
+		std::cout << "Cannot load form file" << std::endl;
+	if (!mTruckTexture.loadFromFile("resources/tan2.png"))							//Tank 1 Texture
+		std::cout << "Cannot load form file" << std::endl;
+	if(!tankTexture.loadFromFile("resources/tan.png"))								//Tank 2 Texture
+		std::cout << "Cannot load form file" << std::endl;
+	
+
+	//Assigning Textures to Sprites
+	sf::Sprite bgsprite, planeSprite, mTruckSprite,fuelicon,planelifeindicator, hudmenu, tankSprite, missileSprite;
+
+	//Indivisualling Giving Textures to Sprites
 	mTruckSprite.setTexture(mTruckTexture);
 	bgsprite.setTexture(bgtexture);
+	hudmenu.setTexture(hud);
+	planelifeindicator.setTexture(planelife);
+	fuelicon.setTexture(fuel);
 	planeSprite.setTexture(planeTexture);
 	tankSprite.setTexture(tankTexture);
 	missileSprite.setTexture(missileTexture);
 
+
 	sf::Vector2u sizemTruck = mTruckTexture.getSize();
 	sf::Vector2u sizeTank = tankTexture.getSize();
+	sf::Vector2u sizeHud = hud.getSize();
+	
+	//HUD Texts
+	LifeFuel LifeFuel(window.getSize().x, window.getSize().y);
 
 	//Game loop
 	while (window.isOpen())
@@ -92,17 +120,23 @@ void Engine::start() {
 		window.clear(sf::Color::Black);
 		//background drawn
 		window.draw(bgsprite);
+
+		//Initiallizing screenX, screenY values
 		float screenX = 0.0f, screenY = 600.0f;
 
+		//Placement for every sprites
+		hudmenu.setPosition(sf::Vector2f(hudX, hudY));
+		fuelicon.setPosition(sf::Vector2f(fueliconX, fueliconY));
 		missileSprite.setPosition(sf::Vector2f(missileX, missileY));
 		planeSprite.setPosition(sf::Vector2f(planeX, planeY));
 		mTruckSprite.setPosition(sf::Vector2f(truckX, truckY - sizemTruck.y));
 		tankSprite.setPosition(sf::Vector2f(tankX, tankY - sizeTank.y + 5.0f));
+		planelifeindicator.setPosition(sf::Vector2f(planelifeX, planelifeY));
 
 
 
-		//todo plane conditions
-		//plane boundary conditions
+
+		//Giving Boundary For Plane, When Boundary Condition Meets Plane will be turned as Y-Mirror
 		if (planeX < 0)
 		{
 			planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
@@ -131,7 +165,8 @@ void Engine::start() {
 			missileSprite.setRotation(90.0f);
 			//planeOffsetY = fabsf(planeOffsetY);
 		}
-		//truck boundary conditions
+
+		//Tank 1 boundary conditions
 		if (truckX < 0)
 		{
 			mTruckSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
@@ -142,7 +177,8 @@ void Engine::start() {
 			mTruckSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 			truckOffsetX = fabsf(truckOffsetX);
 		}
-		//tank boundary conditions
+
+		//Tank 2 boundary conditions
 		if (tankX < 0)
 		{
 			tankSprite.setScale(sf::Vector2f(1.0f, 1.0f));
@@ -153,7 +189,16 @@ void Engine::start() {
 			tankSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 			tankOffsetX = -fabsf(tankOffsetX);
 		}
-		//when down key is pressed 
+
+
+		//Controls For Plane Sprite
+		// Down 
+		// Up
+		// Q				Quit Forcely Close all the current window
+		// Escapse			Back to mainmenu
+		// R				Reload the Current Window
+		// Space			Launching Missiles
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			planeSprite.rotate(-3.0f);
@@ -170,7 +215,7 @@ void Engine::start() {
 			planeOffset = &planeOffsetX;*/
 
 		}
-		//when up arrow key is pressed 
+		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			planeSprite.rotate(3.0f);
@@ -179,10 +224,9 @@ void Engine::start() {
 			planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 			planeOffsetX = fabsf(planeOffsetX);*/
 		}
-		//whe escape is pressed game wil be exited
+		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 		{
-
 			window.close();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -191,7 +235,6 @@ void Engine::start() {
 			planesound.pause();
 			window.close();
 			Game::start();
-
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
@@ -204,87 +247,17 @@ void Engine::start() {
 			window.close();
 			Engine::start();
 		}
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			//if planeOffsetX is negative then -90
-			upRotate = planeSprite.getRotation();
-			if ((int)upRotate < 270)
-			{
-				if ((int)upRotate > 265)
-				{
-					upRotate = 270.0f;
-					upRotate = planeSprite.getRotation();
-				}
-				else
-				{
-				planeSprite.rotate(0.5f);
-				upRotate = planeSprite.getRotation();
-				}
-			}
-			if ((int)upRotate > 270)
-			{
-				if ((int)upRotate < 275)
-				{
-					upRotate = 270.0f;
-					upRotate = planeSprite.getRotation();
-				}
-				else {
-					planeSprite.rotate(-0.5f);
-					upRotate = planeSprite.getRotation();
-				}
-			}
-			planeSprite.setRotation(upRotate);
-			planeOffsetY = -fabsf(planeOffsetY);
-			//todo from here
-			plane = &planeY;
-			planeOffset = &planeOffsetY;
-		}*/
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			downRotate=planeSprite.getRotation();
-			if ((int)downRotate < 90)
-			{
-				if ((int)downRotate > 85)
-				{
-					downRotate = 90.0f;
-					downRotate = planeSprite.getRotation();
-				}
-				else {
-					planeSprite.rotate(0.5f);
-					downRotate = planeSprite.getRotation();
-				}
-			}
-			if ((int)downRotate > 90)
-			{
-				if ((int)downRotate < 95)
-				{
-					downRotate = 90.0f;
-					downRotate = planeSprite.getRotation();
-				}
-				else {
-					planeSprite.rotate(-0.5f);
-					downRotate = planeSprite.getRotation();
-				}
-			}
-			planeSprite.setRotation(downRotate);
-			planeOffsetY = fabsf(planeOffsetY);
-			//todo
-			plane = &planeY;
-			planeOffset = &planeOffsetY;
-		}*/
 
-		//see for boundary condition
-		//trying to do for velocity and failing miserably
-		//planeOffsetX = cos(planeSprite.getRotation())*5.0f;
-		//missileOffsetX = cos(missileSprite.getRotation())*5.0f;
+		//Rotations of Plane, Missile and updating the planeX and planeY position
 		planeOffsetY = sin(planeSprite.getRotation())*5.0f;
 		missileOffsetY = sin(missileSprite.getRotation())*5.0f;
 		planeX += planeOffsetX;
 		planeY += planeOffsetY;
 		truckX = truckX - truckOffsetX;
 		tankX = tankX + tankOffsetX;
-
 		missileX += missileOffsetX;
+
+		//When Space Button is Pressed
 		if (missileLaunched)
 		{
 			Missile::move(&missileSprite, &missileY, planePosition);
@@ -302,14 +275,16 @@ void Engine::start() {
 			missileY = planeY;
 			missileLaunched = false;
 		}
-		//clk.restart();
+		
 
-	//draw all the gameobjects according to z-index
+		//Draw all the gameobjects according to z-index
 		window.draw(missileSprite);
 		window.draw(planeSprite);
 
+		//Collision Detection
 		if (Collision::Detect(&missileSprite, &mTruckSprite))
 		{
+			
 			tankCollision = false;
 			truck_CollisionX = truckX, truck_CollisionY = truckY;
 			truckCollision = true;
@@ -321,9 +296,8 @@ void Engine::start() {
 		}
 		if (truckCollision)
 		{
-
-			Explosion::Create(truck_CollisionX, truck_CollisionY, window, "truck");
 			
+			Explosion::Create(truck_CollisionX, truck_CollisionY, window, "truck");
 
 		}
 		if (!truckCollision)
@@ -332,6 +306,7 @@ void Engine::start() {
 		}
 		if (Collision::Detect(&missileSprite, &tankSprite))
 		{
+			
 			tank_CollisionX = tankX, tank_CollisionY = tankY;
 			tankCollision = true;
 			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
@@ -339,17 +314,21 @@ void Engine::start() {
 			tankOffsetX = 0;
 			tankX = -100;
 			truckCollision = false;
+			
 		}
 		if (tankCollision)
 		{
-
-			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
-
+			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");		
 		}
 		if (!tankCollision)
 		{
 			window.draw(tankSprite);
 		}
+		//Drawing remaining sprites
+		LifeFuel.draw(window);
+		window.draw(planelifeindicator);
+		window.draw(hudmenu);
+		window.draw(fuelicon);
 		window.display();
 
 
