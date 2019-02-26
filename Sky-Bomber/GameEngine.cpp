@@ -7,18 +7,19 @@
 void Engine::start() {
 
 	//inital parameters set
+	float r = 0.0f, a = 0.0f;
 	float planeX = 40.0f, planeY = 100.0f;
 	float truckX = 700.0f, truckY = 680.0f; //673 would be better for proper placement
 	float tankX = 30.0f, tankY = 680.0f;	//665 would be better for proper placement
 	float planeOffsetX = 5.0f;
 	float truckOffsetX = 3.0f;
 	float tankOffsetX = 4.0f;
-	float planeOffsetY = 5.0f;
+	float planeOffsetY = 0.0f;
 	float hudX = 102.0f, hudY = 0.0f;
 	float planelifeX =52.0f, planelifeY = 40.0f;
 	float fueliconX = 1265.0f, fueliconY = 40.0f;
 	float missileX = planeX, missileY = planeY;
-	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetX;
+	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetY;
 	float truck_CollisionX, truck_CollisionY;
 	float tank_CollisionX, tank_CollisionY;
 	bool missileLaunched = false;
@@ -48,7 +49,7 @@ void Engine::start() {
 
 
 	//window event
-	sf::RenderWindow window(sf::VideoMode(1366, 768), "SKY BOMBER", sf::Style::Fullscreen);
+	sf::RenderWindow window(sf::VideoMode(1366, 768), "SKY BOMBER");
 	window.setFramerateLimit(60);
 
 	//Playing Music on Background
@@ -70,7 +71,7 @@ void Engine::start() {
 		std::cout << "Cannot load form file" << std::endl;
 	if (!bgtexture.loadFromFile("resources/background.png"))						//Main Background
 		std::cout << "Cannot load form file" << std::endl;
-	if (!planeTexture.loadFromFile("resources/plane1.png"))							//Plane Texture
+	if (!planeTexture.loadFromFile("resources/plane4.png"))							//Plane Texture
 		std::cout << "Cannot load form file" << std::endl;
 	if(!missileTexture.loadFromFile("resources/missile.png"))						//Missile Texture
 		std::cout << "Cannot load form file" << std::endl;
@@ -93,7 +94,8 @@ void Engine::start() {
 	tankSprite.setTexture(tankTexture);
 	missileSprite.setTexture(missileTexture);
 
-
+	sf::Vector2u sizePlane = planeTexture.getSize();
+	sf::Vector2u sizeMissile = missileTexture.getSize();
 	sf::Vector2u sizemTruck = mTruckTexture.getSize();
 	sf::Vector2u sizeTank = tankTexture.getSize();
 	sf::Vector2u sizeHud = hud.getSize();
@@ -122,7 +124,7 @@ void Engine::start() {
 		window.draw(bgsprite);
 
 		//Initiallizing screenX, screenY values
-		float screenX = 0.0f, screenY = 600.0f;
+		float screenX = 0.0f, screenY = 768.0f;
 
 		//Placement for every sprites
 		hudmenu.setPosition(sf::Vector2f(hudX, hudY));
@@ -137,33 +139,77 @@ void Engine::start() {
 
 
 		//Giving Boundary For Plane, When Boundary Condition Meets Plane will be turned as Y-Mirror
-		if (planeX < 0)
+		planeSprite.move(planeOffsetX, planeOffsetY);
+
+		if (planeSprite.getPosition().x < 0.0f)
 		{
-			planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
-			missileSprite.setScale(sf::Vector2f(1.0f, 1.0f));
-			planePosition = "right";
-			planeOffsetX = fabsf(planeOffsetX);
-			missileOffsetX = fabsf(missileOffsetX);
+			r = planeSprite.getRotation();
+			a = 180 + ((360 - r));
+
+			planeSprite.setRotation(a);
+			missileSprite.setRotation(a);
+			planeSprite.setScale(1.0f, 1.0f);
+			missileSprite.setScale(1.0f, 1.0f);
+
 		}
-		if (planeX > 1360)
+		if (planeSprite.getPosition().x > (1366 - sizePlane.x))
 		{
-			planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
-			missileSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
-			planePosition = "left";
-			planeOffsetX = -fabsf(planeOffsetX);
-			missileOffsetX = -fabsf(missileOffsetX);
+
+			r = planeSprite.getRotation();
+			a = 180 + ((360 - r));
+
+			planeSprite.setRotation(a);
+			missileSprite.setRotation(a);
+			planeSprite.setScale(1.0f, -1.0f);
+			missileSprite.setScale(1.0f, 1.0f);
+
 		}
-		if (planeY > (screenY - 180.0f))
+		if (planeSprite.getPosition().y > (screenY - 180.0f))
 		{
-			planeSprite.setRotation(270.0f);
-			missileSprite.setRotation(270.0f);
-			//planeOffsetY = -fabsf(planeOffsetY);
+			r = planeSprite.getRotation();
+			a = r + ((360 - r) * 2);
+			planeSprite.setRotation(a);
+			missileSprite.setRotation(a);
+
 		}
-		if (planeY < 0)
+		if (planeSprite.getPosition().y < 0)
 		{
-			planeSprite.setRotation(90.0f);
-			missileSprite.setRotation(90.0f);
-			//planeOffsetY = fabsf(planeOffsetY);
+			r = planeSprite.getRotation();
+			a = r + ((360 - r) * 2);
+			planeSprite.setRotation(a);
+			missileSprite.setRotation(a);
+		}
+		planeSprite.setOrigin(sizePlane.x / 2, sizePlane.y / 2);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+
+			if (planeSprite.getScale().x > 0)
+			{
+				planeSprite.rotate(-3.0f);
+				missileSprite.rotate(-3.0f);
+			}
+			else
+			{
+				planeSprite.rotate(3.0f);
+				missileSprite.rotate(3.0f);
+			}
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			if (planeSprite.getScale().x > 0)
+			{
+				planeSprite.rotate(3.0f);
+				missileSprite.rotate(3.0f);
+
+			}
+			else
+			{
+				planeSprite.rotate(-3.0f);
+				missileSprite.rotate(-3.0f);
+
+			}
+
 		}
 
 		//Tank 1 boundary conditions
@@ -199,32 +245,7 @@ void Engine::start() {
 		// R				Reload the Current Window
 		// Space			Launching Missiles
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			planeSprite.rotate(-3.0f);
-			missileSprite.rotate(-3.0f);
-
-
-			/*planeSprite.setRotation(0.0f);
-			planeSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
-			if (planeOffsetX > 0)
-			{
-				planeOffsetX = -planeOffsetX;
-			}
-			plane = &planeX;
-			planeOffset = &planeOffsetX;*/
-
-		}
-		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			planeSprite.rotate(3.0f);
-			missileSprite.rotate(3.0f);
-			/*planeSprite.setRotation(0.0f);
-			planeSprite.setScale(sf::Vector2f(1.0f, 1.0f));
-			planeOffsetX = fabsf(planeOffsetX);*/
-		}
-		
+	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 		{
 			window.close();
@@ -249,8 +270,6 @@ void Engine::start() {
 		}
 
 		//Rotations of Plane, Missile and updating the planeX and planeY position
-		planeOffsetY = sin(planeSprite.getRotation())*5.0f;
-		missileOffsetY = sin(missileSprite.getRotation())*5.0f;
 		planeX += planeOffsetX;
 		planeY += planeOffsetY;
 		truckX = truckX - truckOffsetX;
@@ -324,6 +343,11 @@ void Engine::start() {
 		{
 			window.draw(tankSprite);
 		}
+
+		planeOffsetX = cos(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
+		planeOffsetY = sin(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
+		missileOffsetX = cos(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
+		missileOffsetY = sin(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
 		//Drawing remaining sprites
 		LifeFuel.draw(window);
 		window.draw(planelifeindicator);
