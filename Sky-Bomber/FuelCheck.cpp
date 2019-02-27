@@ -2,7 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/System/Clock.hpp>
 #include<iostream>
-bool FuelCheck::isFinished(bool collision=false)
+bool FuelCheck::isFinished(bool collision)
 {
 	static sf::Clock clk;
 	static int startFuel = 30;

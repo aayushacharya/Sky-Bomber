@@ -24,6 +24,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 	static bool tank2CollisionRecord[5] = { false,false,false,false,false };
 	static sf::Music explosion;
 	static int collisionObj;
+	static int totalCollided;
 	if (initialization)
 	{
 		for (int i = 0;i < 5;i++)
@@ -59,6 +60,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			tank2Sprite[i].setPosition(sf::Vector2f(tank2X[i], tank2Y[i]));
 			if (Collision::Detect(missileSprite, &tank1Sprite[i]))
 			{
+				totalCollided+=100;
 				FuelCheck::isFinished(true);
 				tank2Collision = false;
 				tank1_CollisionX = tank1X[i];
@@ -83,6 +85,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			}
 			if (Collision::Detect(missileSprite, &tank2Sprite[i]))
 			{
+				totalCollided+=100;
 				FuelCheck::isFinished(true);
 				collisionObj = i;
 				tank2_CollisionX = tank2X[i];

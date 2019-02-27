@@ -356,7 +356,7 @@ void Engine::start() {
 		window.draw(hudmenu);
 		window.draw(fuelicon);
 		window.display();
-		if (FuelCheck::isFinished())
+		if (FuelCheck::isFinished(false))
 		{
 			break;
 		}

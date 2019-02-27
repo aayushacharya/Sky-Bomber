@@ -1,2 +1,9 @@
-﻿  GameObject.cpp
+﻿  FuelCheck.cpp
+  GameEngine.cpp
+e:\sky-bomber\sky-bomber\gameengine.cpp(25): warning C4101: 'truck_CollisionX': unreferenced local variable
+e:\sky-bomber\sky-bomber\gameengine.cpp(25): warning C4101: 'truck_CollisionY': unreferenced local variable
+e:\sky-bomber\sky-bomber\gameengine.cpp(26): warning C4101: 'tank_CollisionY': unreferenced local variable
+e:\sky-bomber\sky-bomber\gameengine.cpp(26): warning C4101: 'tank_CollisionX': unreferenced local variable
+  GameObject.cpp
+  Generating Code...
   C++Project.vcxproj -> E:\Sky-Bomber\Sky-Bomber\Debug\C++Project.exe
