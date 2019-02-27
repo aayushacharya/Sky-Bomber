@@ -6,7 +6,7 @@
 #include"../Collision.h"
 #include"../Explosion.h"
 #include "SFML/Audio.hpp"
-
+#include"../FuelCheck.h"
 void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSprite,sf::RenderWindow& window)
 {
 	static float tank1X[5] = { 700.0f,700.0f,700.0f,700.0f,700.0f }, tank1Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
@@ -59,7 +59,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			tank2Sprite[i].setPosition(sf::Vector2f(tank2X[i], tank2Y[i]));
 			if (Collision::Detect(missileSprite, &tank1Sprite[i]))
 			{
-
+				FuelCheck::isFinished(true);
 				tank2Collision = false;
 				tank1_CollisionX = tank1X[i];
 				tank1Collision = true;
@@ -83,6 +83,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			}
 			if (Collision::Detect(missileSprite, &tank2Sprite[i]))
 			{
+				FuelCheck::isFinished(true);
 				collisionObj = i;
 				tank2_CollisionX = tank2X[i];
 				tank2Collision = true;
@@ -106,7 +107,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			tank2X[i] += tank2OffsetX[i];
 		}
 	
-		
+		FuelCheck::isFinished(false);
 	
 	
 	

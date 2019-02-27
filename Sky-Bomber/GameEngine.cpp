@@ -5,6 +5,7 @@
 #include "Explosion.h"
 #include "HUD.h"
 #include"../GameObject.h"
+#include"../FuelCheck.h"
 void Engine::start() {
 
 	//inital parameters set
@@ -355,7 +356,10 @@ void Engine::start() {
 		window.draw(hudmenu);
 		window.draw(fuelicon);
 		window.display();
-
+		if (FuelCheck::isFinished())
+		{
+			break;
+		}
 
 	}
 
