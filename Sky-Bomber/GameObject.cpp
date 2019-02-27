@@ -1,9 +1,12 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/System/Clock.hpp>
+#include<iostream>
 #include"../GameObject.h"
 #include"../Boundary.h"
 #include"../Collision.h"
 #include"../Explosion.h"
+#include "SFML/Audio.hpp"
+
 void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSprite,sf::RenderWindow& window)
 {
 	static float tank1X[5] = { 700.0f,700.0f,700.0f,700.0f,700.0f }, tank1Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
@@ -19,7 +22,8 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 	static bool tank1Collision = false, tank2Collision = false;
 	static bool tank1CollisionRecord[5] = { false,false,false,false,false };
 	static bool tank2CollisionRecord[5] = { false,false,false,false,false };
-
+	static sf::Music explosion;
+	static int collisionObj;
 	if (initialization)
 	{
 		for (int i = 0;i < 5;i++)
@@ -27,6 +31,9 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			tank1Sprite[i].setTexture(tank1);
 			tank2Sprite[i].setTexture(tank2);
 		}
+		if (!explosion.openFromFile("resources/Explosion.wav"))
+			std::cout << "sound not streamed" << std::endl;
+
 	}
 	initialization = false;
 	//todo 
@@ -56,8 +63,9 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 				tank2Collision = false;
 				tank1_CollisionX = tank1X[i];
 				tank1Collision = true;
-				Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1");
-				//explosion.play();
+				collisionObj = i;
+				Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1",collisionObj);
+				explosion.play();
 				tank1OffsetX[i] = 0;
 				tank1X[i] = -100;
 				tank1CollisionRecord[i] = true;
@@ -66,7 +74,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			if (tank1Collision)
 			{
 
-				Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1");
+				Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1", collisionObj);
 
 			}
 			if (!tank1CollisionRecord[i])
@@ -75,11 +83,11 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			}
 			if (Collision::Detect(missileSprite, &tank2Sprite[i]))
 			{
-
+				collisionObj = i;
 				tank2_CollisionX = tank2X[i];
 				tank2Collision = true;
-				Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2");
-				//explosion.play();
+				Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2",collisionObj);
+				explosion.play();
 				tank2OffsetX[i] = 0;
 				tank2X[i] = -100;
 				tank1Collision = false;
@@ -88,11 +96,11 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 			}
 			if (tank2Collision)
 			{
-				Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2");
+				Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2",collisionObj);
 			}
 			if (!tank2CollisionRecord[i])
 			{
-				window.draw(tank2Sprite[i]); //see if problem
+				window.draw(tank2Sprite[i]); 
 			}
 			tank1X[i] += tank1OffsetX[i];
 			tank2X[i] += tank2OffsetX[i];

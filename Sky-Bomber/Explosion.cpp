@@ -1,11 +1,12 @@
 #include "../Explosion.h"
 #include<iostream>
 #include <SFML/Graphics.hpp>
-void Explosion::Create(float ObjX,float ObjY,sf::RenderWindow& window,std::string GameObj)
+void Explosion::Create(float ObjX,float ObjY,sf::RenderWindow& window,std::string GameObj,int no)
 {
 	float xPos = ObjX;
 	float yPos=ObjY;
 	static std::string ObjName=GameObj;
+	static int objNum = no;
 	sf::Texture explosionText;
 	if (!explosionText.loadFromFile("resources/explosion.png"))
 	{
@@ -28,12 +29,13 @@ void Explosion::Create(float ObjX,float ObjY,sf::RenderWindow& window,std::strin
 	}
 	if (counter > 2)
 	{
-		if (ObjName == GameObj)
+		if (ObjName == GameObj && objNum==no)
 		{
 		}
 		else
 		{
 			ObjName = GameObj;
+			objNum = no;
 			counter = 0;
 			x = 0;
 			y = 0;

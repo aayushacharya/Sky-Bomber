@@ -3,5 +3,5 @@
 #include<SFML/System/Time.hpp>
 #include<iostream>
 namespace Explosion {
-	void Create(float,float,sf::RenderWindow&,std::string);
+	void Create(float,float,sf::RenderWindow&,std::string,int);
 }
