@@ -18,16 +18,14 @@ void Engine::start() {
 	float tankOffsetX = 4.0f;
 	float planeOffsetY = 0.0f;
 	float hudX = 102.0f, hudY = 0.0f;
-	float planelifeX =52.0f, planelifeY = 40.0f;
+	float planelifeX = 52.0f, planelifeY = 40.0f;
 	float fueliconX = 1265.0f, fueliconY = 40.0f;
 	float missileX = planeX, missileY = planeY;
 	float missileOffsetX = planeOffsetX, missileOffsetY = planeOffsetY;
-	float truck_CollisionX, truck_CollisionY;
-	float tank_CollisionX, tank_CollisionY;
 	bool missileLaunched = false;
 	bool truckCollision = false;
 	bool tankCollision = false;
-	
+	FuelCheck fuelcheck;
 
 	std::string planePosition = "right";
 	sf::Clock clk;
@@ -58,33 +56,33 @@ void Engine::start() {
 	ingamemusic.play();
 	planesound.play();
 	planesound.setLoop(true); //Looping For Continuous Sound
-	
-	//Textures 
-	sf::Texture bgtexture,hud, planeTexture, fuel, planelife, mTruckTexture, tankTexture, missileTexture;
-	
 
-	
+	//Textures 
+	sf::Texture bgtexture, hud, planeTexture, fuel, planelife, mTruckTexture, tankTexture, missileTexture;
+
+
+
 	//Loading Textures
 	if (!planelife.loadFromFile("resources/planelifeicon.png"))						//Life Texture
-		std::cout << "Cannot load from file" <<std::endl;
+		std::cout << "Cannot load from file" << std::endl;
 	if (!hud.loadFromFile("resources/HUD.png"))										//HUD Texture
 		std::cout << "Cannot load from file" << std::endl;
 	if (!fuel.loadFromFile("resources/fuel.png"))								//Fuel Icon
 		std::cout << "Cannot load form file" << std::endl;
 	if (!bgtexture.loadFromFile("resources/background.png"))						//Main Background
 		std::cout << "Cannot load form file" << std::endl;
-	if (!planeTexture.loadFromFile("resources/plane4.png"))							//Plane Texture
+	if (!planeTexture.loadFromFile("resources/planeboeing.png"))							//Plane Texture
 		std::cout << "Cannot load form file" << std::endl;
-	if(!missileTexture.loadFromFile("resources/missile.png"))						//Missile Texture
+	if (!missileTexture.loadFromFile("resources/missile.png"))						//Missile Texture
 		std::cout << "Cannot load form file" << std::endl;
 	if (!mTruckTexture.loadFromFile("resources/tan2.png"))							//Tank 1 Texture
 		std::cout << "Cannot load form file" << std::endl;
-	if(!tankTexture.loadFromFile("resources/tan.png"))								//Tank 2 Texture
+	if (!tankTexture.loadFromFile("resources/tan.png"))								//Tank 2 Texture
 		std::cout << "Cannot load form file" << std::endl;
-	
+
 
 	//Assigning Textures to Sprites
-	sf::Sprite bgsprite, planeSprite, mTruckSprite,fuelicon,planelifeindicator, hudmenu, tankSprite, missileSprite;
+	sf::Sprite bgsprite, planeSprite, mTruckSprite, fuelicon, planelifeindicator, hudmenu, tankSprite, missileSprite;
 
 	//Indivisualling Giving Textures to Sprites
 	mTruckSprite.setTexture(mTruckTexture);
@@ -101,9 +99,10 @@ void Engine::start() {
 	sf::Vector2u sizemTruck = mTruckTexture.getSize();
 	sf::Vector2u sizeTank = tankTexture.getSize();
 	sf::Vector2u sizeHud = hud.getSize();
-	
+
 	//HUD Texts
-	LifeFuel LifeFuel(window.getSize().x, window.getSize().y);
+
+	
 
 	//Game loop
 	while (window.isOpen())
@@ -225,7 +224,6 @@ void Engine::start() {
 			mTruckSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 			truckOffsetX = fabsf(truckOffsetX);
 		}
-
 		//Tank 2 boundary conditions
 		if (tankX < 0)
 		{
@@ -247,7 +245,7 @@ void Engine::start() {
 		// R				Reload the Current Window
 		// Space			Launching Missiles
 
-	
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 		{
 			window.close();
@@ -296,7 +294,7 @@ void Engine::start() {
 			missileY = planeY;
 			missileLaunched = false;
 		}
-		
+
 
 		//Draw all the gameobjects according to z-index
 		window.draw(missileSprite);
@@ -305,7 +303,7 @@ void Engine::start() {
 		//Collision Detection
 		/*if (Collision::Detect(&missileSprite, &mTruckSprite))
 		{
-			
+
 			tankCollision = false;
 			truck_CollisionX = truckX, truck_CollisionY = truckY;
 			truckCollision = true;
@@ -313,13 +311,11 @@ void Engine::start() {
 			explosion.play();
 			truckOffsetX = 0;
 			truckX = -100;
-
 		}
 		if (truckCollision)
 		{
-			
-			Explosion::Create(truck_CollisionX, truck_CollisionY, window, "truck");
 
+			Explosion::Create(truck_CollisionX, truck_CollisionY, window, "truck");
 		}
 		if (!truckCollision)
 		{
@@ -327,7 +323,7 @@ void Engine::start() {
 		}
 		if (Collision::Detect(&missileSprite, &tankSprite))
 		{
-			
+
 			tank_CollisionX = tankX, tank_CollisionY = tankY;
 			tankCollision = true;
 			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
@@ -335,11 +331,11 @@ void Engine::start() {
 			tankOffsetX = 0;
 			tankX = -100;
 			truckCollision = false;
-			
+
 		}
 		if (tankCollision)
 		{
-			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");		
+			Explosion::Create(tank_CollisionX, tank_CollisionY, window, "tank");
 		}
 		if (!tankCollision)
 		{
@@ -350,16 +346,21 @@ void Engine::start() {
 		planeOffsetY = sin(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
 		missileOffsetX = cos(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
 		missileOffsetY = sin(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
+		if (fuelcheck.isFinished())
+		{
+			std::cout << "sjdkjffffffffffffffffffff";
+			std::cin.get();
+			break;
+		}
 		//Drawing remaining sprites
+		//std::cout << "The value is :" << fuelcheck.getFuel() << "\n";
+		LifeFuel LifeFuel(window.getSize().x, window.getSize().y, fuelcheck.getFuel());
 		LifeFuel.draw(window);
 		window.draw(planelifeindicator);
 		window.draw(hudmenu);
 		window.draw(fuelicon);
 		window.display();
-		if (FuelCheck::isFinished(false))
-		{
-			break;
-		}
+		
 
 	}
 
