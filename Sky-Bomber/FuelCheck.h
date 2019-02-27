@@ -1,6 +1,21 @@
 
 #pragma once
 #include<SFML/Graphics.hpp>
-namespace FuelCheck {
-	 bool isFinished(bool);
-}
+
+class FuelCheck {
+public:
+	  int currentFuel;
+	  FuelCheck()
+	  {
+		 
+	  }
+	bool isFinished(bool collision = false);
+	void setFuel(int ccurrentFuel)
+	{
+		currentFuel = ccurrentFuel;
+	}
+	int getFuel()
+	{
+		return currentFuel;
+	}
+};
