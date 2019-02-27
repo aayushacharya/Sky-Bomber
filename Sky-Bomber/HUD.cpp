@@ -1,18 +1,25 @@
 #include "../HUD.h"
 #include <SFML/Audio.hpp>
-
-LifeFuel::LifeFuel(float width, float height)
+#include <iostream>
+#include <sstream>
+using namespace std;
+LifeFuel::LifeFuel(float width, float height, int fuel)
 {
 
-
+	// << "The value is :" << fuel << "\n";
 	if (!font.loadFromFile("resources/numberfont.ttf"))
 	{
 		std::cout << "Loading Failed" << std::endl;
 	}
 
+	stringstream ss;
+	
+	ss.str("");
+	ss << fuel;
+
 	Lifefuel[0].setFont(font);
 	Lifefuel[0].setColor(sf::Color::Black);
-	Lifefuel[0].setString("3");
+	Lifefuel[0].setString(ss.str());
 	Lifefuel[0].setScale(1.5, 1.5);
 	Lifefuel[0].setPosition(sf::Vector2f(width-1346.0f, height - 738.0f));
 
@@ -36,5 +43,6 @@ void LifeFuel::draw(sf::RenderWindow &window)
 		window.draw(Lifefuel[i]);
 	}
 }
+
 
 
