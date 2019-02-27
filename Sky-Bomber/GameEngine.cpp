@@ -4,6 +4,7 @@
 #include "SFML/Audio.hpp"
 #include "Explosion.h"
 #include "HUD.h"
+#include"../GameObject.h"
 void Engine::start() {
 
 	//inital parameters set
@@ -213,7 +214,7 @@ void Engine::start() {
 		}
 
 		//Tank 1 boundary conditions
-		if (truckX < 0)
+		/*if (truckX < 0)
 		{
 			mTruckSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 			truckOffsetX = -fabsf(truckOffsetX);
@@ -234,7 +235,7 @@ void Engine::start() {
 		{
 			tankSprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 			tankOffsetX = -fabsf(tankOffsetX);
-		}
+		}*/
 
 
 		//Controls For Plane Sprite
@@ -272,8 +273,8 @@ void Engine::start() {
 		//Rotations of Plane, Missile and updating the planeX and planeY position
 		planeX += planeOffsetX;
 		planeY += planeOffsetY;
-		truckX = truckX - truckOffsetX;
-		tankX = tankX + tankOffsetX;
+		//truckX = truckX - truckOffsetX;
+		//tankX = tankX + tankOffsetX;
 		missileX += missileOffsetX;
 
 		//When Space Button is Pressed
@@ -299,9 +300,9 @@ void Engine::start() {
 		//Draw all the gameobjects according to z-index
 		window.draw(missileSprite);
 		window.draw(planeSprite);
-
+		Level1::Start(mTruckTexture, tankTexture, &missileSprite, window);
 		//Collision Detection
-		if (Collision::Detect(&missileSprite, &mTruckSprite))
+		/*if (Collision::Detect(&missileSprite, &mTruckSprite))
 		{
 			
 			tankCollision = false;
@@ -342,7 +343,7 @@ void Engine::start() {
 		if (!tankCollision)
 		{
 			window.draw(tankSprite);
-		}
+		}*/
 
 		planeOffsetX = cos(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
 		planeOffsetY = sin(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
