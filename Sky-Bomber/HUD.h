@@ -9,7 +9,7 @@
 class LifeFuel
 {
 public:
-	LifeFuel(float width, float height);
+	LifeFuel(float width, float height,int fuel);
 	~LifeFuel();
 
 	void draw(sf::RenderWindow &window);
