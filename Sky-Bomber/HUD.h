@@ -9,7 +9,7 @@
 class LifeFuel
 {
 public:
-	LifeFuel(float width, float height,int fuel);
+	LifeFuel(float width, float height, int fuel, int life);
 	~LifeFuel();
 
 	void draw(sf::RenderWindow &window);
@@ -19,3 +19,4 @@ private:
 	sf::Text Lifefuel[MAX_NUMBER_OF_ITEMS];
 
 };
+
