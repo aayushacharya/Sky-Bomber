@@ -7,7 +7,9 @@
 #include"../Explosion.h"
 #include "SFML/Audio.hpp"
 #include"../FuelCheck.h"
-void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSprite,sf::RenderWindow& window)
+
+FuelCheck fuelcheck;
+void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSprite, sf::RenderWindow& window)
 {
 	static float tank1X[5] = { 700.0f,700.0f,700.0f,700.0f,700.0f }, tank1Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
 	static float tank2X[5] = { 30.0f,30.0f,30.0f,30.0f,30.0f }, tank2Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
@@ -24,10 +26,9 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 	static bool tank2CollisionRecord[5] = { false,false,false,false,false };
 	static sf::Music explosion;
 	static int collisionObj;
-	static int totalCollided;
 	if (initialization)
 	{
-		for (int i = 0;i < 5;i++)
+		for (int i = 0; i < 5; i++)
 		{
 			tank1Sprite[i].setTexture(tank1);
 			tank2Sprite[i].setTexture(tank2);
@@ -39,7 +40,7 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 	initialization = false;
 	//todo 
 	static sf::Clock clk;
-	if (clk.getElapsedTime().asSeconds() > 10.0f) 
+	if (clk.getElapsedTime().asSeconds() > 10.0f)
 	{
 		if (!allGameObjSent)
 		{
@@ -51,67 +52,65 @@ void Level1::Start(sf::Texture& tank1,sf::Texture& tank2,sf::Sprite* missileSpri
 		}
 		clk.restart();
 	}
-	
-		for (int i = 0;i < counter;i++)
+
+	for (int i = 0; i < counter; i++)
+	{
+		GameObj::Boundary::Check(tank1Sprite[i], tank1X[i], tank1OffsetX[i], "left");
+		GameObj::Boundary::Check(tank2Sprite[i], tank2X[i], tank2OffsetX[i], "right");
+		tank1Sprite[i].setPosition(sf::Vector2f(tank1X[i], tank1Y[i]));
+		tank2Sprite[i].setPosition(sf::Vector2f(tank2X[i], tank2Y[i]));
+		if (Collision::Detect(missileSprite, &tank1Sprite[i]))
 		{
-			GameObj::Boundary::Check(tank1Sprite[i], tank1X[i], tank1OffsetX[i], "left");
-			GameObj::Boundary::Check(tank2Sprite[i], tank2X[i], tank2OffsetX[i], "right");
-			tank1Sprite[i].setPosition(sf::Vector2f(tank1X[i], tank1Y[i]));
-			tank2Sprite[i].setPosition(sf::Vector2f(tank2X[i], tank2Y[i]));
-			if (Collision::Detect(missileSprite, &tank1Sprite[i]))
-			{
-				totalCollided+=100;
-				FuelCheck::isFinished(true);
-				tank2Collision = false;
-				tank1_CollisionX = tank1X[i];
-				tank1Collision = true;
-				collisionObj = i;
-				Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1",collisionObj);
-				explosion.play();
-				tank1OffsetX[i] = 0;
-				tank1X[i] = -100;
-				tank1CollisionRecord[i] = true;
+			fuelcheck.isFinished(true);
+			tank2Collision = false;
+			tank1_CollisionX = tank1X[i];
+			tank1Collision = true;
+			collisionObj = i;
+			Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1", collisionObj);
+			explosion.play();
+			tank1OffsetX[i] = 0;
+			tank1X[i] = -100;
+			tank1CollisionRecord[i] = true;
 
-			}
-			if (tank1Collision)
-			{
-
-				Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1", collisionObj);
-
-			}
-			if (!tank1CollisionRecord[i])
-			{
-				window.draw(tank1Sprite[i]);
-			}
-			if (Collision::Detect(missileSprite, &tank2Sprite[i]))
-			{
-				totalCollided+=100;
-				FuelCheck::isFinished(true);
-				collisionObj = i;
-				tank2_CollisionX = tank2X[i];
-				tank2Collision = true;
-				Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2",collisionObj);
-				explosion.play();
-				tank2OffsetX[i] = 0;
-				tank2X[i] = -100;
-				tank1Collision = false;
-				tank2CollisionRecord[i] = true;
-
-			}
-			if (tank2Collision)
-			{
-				Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2",collisionObj);
-			}
-			if (!tank2CollisionRecord[i])
-			{
-				window.draw(tank2Sprite[i]); 
-			}
-			tank1X[i] += tank1OffsetX[i];
-			tank2X[i] += tank2OffsetX[i];
 		}
-	
-		FuelCheck::isFinished(false);
-	
-	
-	
+		if (tank1Collision)
+		{
+
+			Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1", collisionObj);
+
+		}
+		if (!tank1CollisionRecord[i])
+		{
+			window.draw(tank1Sprite[i]);
+		}
+		if (Collision::Detect(missileSprite, &tank2Sprite[i]))
+		{
+			fuelcheck.isFinished(true);
+			collisionObj = i;
+			tank2_CollisionX = tank2X[i];
+			tank2Collision = true;
+			Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2", collisionObj);
+			explosion.play();
+			tank2OffsetX[i] = 0;
+			tank2X[i] = -100;
+			tank1Collision = false;
+			tank2CollisionRecord[i] = true;
+
+		}
+		if (tank2Collision)
+		{
+			Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2", collisionObj);
+		}
+		if (!tank2CollisionRecord[i])
+		{
+			window.draw(tank2Sprite[i]);
+		}
+		tank1X[i] += tank1OffsetX[i];
+		tank2X[i] += tank2OffsetX[i];
+	}
+
+	fuelcheck.isFinished(false);
+
+
+
 }
