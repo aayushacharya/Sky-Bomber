@@ -17,7 +17,7 @@ void Engine::start() {
 	float truckOffsetX = 3.0f;
 	float tankOffsetX = 4.0f;
 	float planeOffsetY = 0.0f;
-	float hudX = 102.0f, hudY = 0.0f;
+	float hudX = 102.0f, hudY = -15.0f;
 	float planelifeX = 52.0f, planelifeY = 40.0f;
 	float fueliconX = 1265.0f, fueliconY = 40.0f;
 	float missileX = planeX, missileY = planeY;
@@ -102,7 +102,7 @@ void Engine::start() {
 
 	//HUD Texts
 
-	
+
 
 	//Game loop
 	while (window.isOpen())
@@ -348,19 +348,17 @@ void Engine::start() {
 		missileOffsetY = sin(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
 		if (fuelcheck.isFinished())
 		{
-			std::cout << "sjdkjffffffffffffffffffff";
-			std::cin.get();
-			break;
+			window.close();
 		}
 		//Drawing remaining sprites
 		//std::cout << "The value is :" << fuelcheck.getFuel() << "\n";
-		LifeFuel LifeFuel(window.getSize().x, window.getSize().y, fuelcheck.getFuel());
+		LifeFuel LifeFuel(window.getSize().x, window.getSize().y, fuelcheck.getFuel(), fuelcheck.getLife());
 		LifeFuel.draw(window);
 		window.draw(planelifeindicator);
 		window.draw(hudmenu);
 		window.draw(fuelicon);
 		window.display();
-		
+
 
 	}
 
