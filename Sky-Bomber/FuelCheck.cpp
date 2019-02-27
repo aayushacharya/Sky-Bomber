@@ -2,51 +2,61 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/System/Clock.hpp>
 #include<iostream>
-bool FuelCheck::isFinished(bool collision )
+bool FuelCheck::isFinished(bool collision)
 {
 	static sf::Clock clk;
-	static int previousTime= 0;
-	static int startFuel = 30;
+	static int previousTime = 0;
+	static int startFuel = 100;
+	static int lifes = 3;
 	static bool fuelFinished = false;
 	static float dt = 0.0f;
 	dt += clk.getElapsedTime().asSeconds();
 	std::cout << int(dt) << std::endl;
 
-	if (int (dt) > 0 && int(dt)!=previousTime )
+	if (int(dt) > 0 && int(dt) != previousTime)
 
 	{
-		if (int(dt) % 10 == 0) {
-			startFuel -= 10; 
+		if (int(dt) % 2 == 0) {
+			startFuel -=2;
 			std::cout << "Fuel Decreases";
 		}
-		
 
-        if (startFuel == 0)
+
+		if (startFuel == 0)
 		{
-			fuelFinished = true;
+
+			lifes--;
+			startFuel = 100;
 		}
-		
+
 
 	}
 	previousTime = int(dt);
-	
+
 	if (collision)
 	{
-		if (startFuel < 30)
+		if (startFuel < 100)
 		{
 			std::cout << "Fuel Increases";
-			startFuel += 10;
+			startFuel += 2;
 		}
 		else
 		{
-			startFuel = 30;
+			startFuel = 100;
 		}
-		
-		std::cout << "Mothersndsjhdjshdjjshdjshdjhsjhdjshdjhsd " << std::endl;
+
+		std::cout << "gg " << std::endl;
 
 	}
+
+	if (lifes == 0)
+	{
+		fuelFinished = true;
+	}
+
 	setFuel(startFuel);
-	std::cout << "The value is :" <<getFuel() << "\n";
+	setLife(lifes);
+	std::cout << "The value is :" << getFuel() << "\n";
 	clk.restart();
 	return fuelFinished;
 }
