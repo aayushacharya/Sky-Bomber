@@ -147,4 +147,5 @@ int Level1::sendScore(int score)
 		return scoreCount;
 	}
 	scoreCount = score;
+	return score;
 }
