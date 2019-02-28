@@ -6,6 +6,7 @@
 #include "HUD.h"
 #include"../GameObject.h"
 #include"../FuelCheck.h"
+#include"../HighScore.h"
 void Engine::start() {
 
 	//inital parameters set
@@ -103,7 +104,7 @@ void Engine::start() {
 	//HUD Texts
 
 
-
+	
 	//Game loop
 	while (window.isOpen())
 	{
@@ -348,6 +349,7 @@ void Engine::start() {
 		missileOffsetY = sin(planeSprite.getRotation()*3.14159265 / 180) * 10.0f;
 		if (fuelcheck.isFinished())
 		{
+			Highscore::Save(Level1::sendScore(1));
 			window.close();
 		}
 		//Drawing remaining sprites

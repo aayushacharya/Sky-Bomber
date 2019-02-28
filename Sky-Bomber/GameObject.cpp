@@ -7,10 +7,12 @@
 #include"../Explosion.h"
 #include "SFML/Audio.hpp"
 #include"../FuelCheck.h"
+#include "../HighScore.h"
 
 FuelCheck fuelcheck;
 void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSprite, sf::RenderWindow& window)
 {
+	int flag = 1;
 	static float tank1X[5] = { 700.0f,700.0f,700.0f,700.0f,700.0f }, tank1Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
 	static float tank2X[5] = { 30.0f,30.0f,30.0f,30.0f,30.0f }, tank2Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
 	static float tank1OffsetX[5] = { -4.0f,-4.0f,-4.0f,-4.0f,-4.0f };
@@ -26,6 +28,7 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 	static bool tank2CollisionRecord[5] = { false,false,false,false,false };
 	static sf::Music explosion;
 	static int collisionObj;
+	static int score=0;
 	if (initialization)
 	{
 		for (int i = 0; i < 5; i++)
@@ -61,6 +64,7 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 		tank2Sprite[i].setPosition(sf::Vector2f(tank2X[i], tank2Y[i]));
 		if (Collision::Detect(missileSprite, &tank1Sprite[i]))
 		{
+			score += 100;
 			fuelcheck.isFinished(true);
 			tank2Collision = false;
 			tank1_CollisionX = tank1X[i];
@@ -85,6 +89,7 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 		}
 		if (Collision::Detect(missileSprite, &tank2Sprite[i]))
 		{
+			score += 100;
 			fuelcheck.isFinished(true);
 			collisionObj = i;
 			tank2_CollisionX = tank2X[i];
@@ -107,10 +112,34 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 		}
 		tank1X[i] += tank1OffsetX[i];
 		tank2X[i] += tank2OffsetX[i];
+		
 	}
+	for (int i = 0;i < 5;i++)
+	{
+		if (tank1CollisionRecord[i] == false || tank2CollisionRecord[i] == false)
+		{
+			flag = 0;
+			break;
+		}
+	}
+	if (flag == 1)
+	{
+		//Level1 Completed
+		Highscore::Save(score);
 
+	}
+	Level1::sendScore(score);
 	fuelcheck.isFinished(false);
 
 
 
+}
+int Level1::sendScore(int score)
+{
+	static int scoreCount;
+	if (score == 1)
+	{
+		return scoreCount;
+	}
+	scoreCount = score;
 }

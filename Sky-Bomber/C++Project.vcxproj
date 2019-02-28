@@ -22,6 +22,7 @@
     <ClCompile Include="Boundary.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="HighScore.cpp" />
     <ClCompile Include="FuelCheck.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEngine.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Boundary.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Explosion.h" />
+    <ClInclude Include="HighScore.h" />
     <ClInclude Include="FuelCheck.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameObject.h" />
