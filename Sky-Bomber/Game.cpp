@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include "../splashscreen.h"
 #include <SFML/Audio.hpp>
+#include "../HighScoreScreen.h"
 
 
 void Game::start(){
@@ -72,6 +73,8 @@ void Game::start(){
 										break;
 
 										case 1:
+										window.close();
+										Screen::HighScore();
 										std::cout << "HighScore should be displayed" << std::endl;
 										break;
 
