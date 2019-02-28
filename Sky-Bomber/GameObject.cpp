@@ -13,6 +13,7 @@ FuelCheck fuelcheck;
 void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSprite, sf::RenderWindow& window)
 {
 	int flag = 1;
+	static int flag1 = 1;
 	static float tank1X[5] = { 700.0f,700.0f,700.0f,700.0f,700.0f }, tank1Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
 	static float tank2X[5] = { 30.0f,30.0f,30.0f,30.0f,30.0f }, tank2Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
 	static float tank1OffsetX[5] = { -4.0f,-4.0f,-4.0f,-4.0f,-4.0f };
@@ -125,7 +126,11 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 	if (flag == 1)
 	{
 		//Level1 Completed
-		Highscore::Save(score);
+		if (flag1)
+		{
+			Highscore::Save(score);
+			flag1 = 0;
+		}
 
 	}
 	Level1::sendScore(score);
