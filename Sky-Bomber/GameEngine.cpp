@@ -164,7 +164,7 @@ void Engine::start() {
 			missileSprite.setRotation(a);
 			planeSprite.setScale(1.0f, -1.0f);
 			missileSprite.setScale(1.0f, 1.0f);
-
+			
 		}
 		if (planeSprite.getPosition().y > (screenY - 180.0f))
 		{
@@ -185,7 +185,7 @@ void Engine::start() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 
-			if (planeSprite.getScale().x > 0)
+			if (planeSprite.getScale(). y> 0)
 			{
 				planeSprite.rotate(-3.0f);
 				missileSprite.rotate(-3.0f);
@@ -199,7 +199,7 @@ void Engine::start() {
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			if (planeSprite.getScale().x > 0)
+			if (planeSprite.getScale().y > 0)
 			{
 				planeSprite.rotate(3.0f);
 				missileSprite.rotate(3.0f);
