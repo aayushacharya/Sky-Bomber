@@ -60,7 +60,7 @@ void Engine::start() {
 	planesound.setLoop(true); //Looping For Continuous Sound
 
 	//Textures 
-	sf::Texture bgtexture, hud, planeTexture, fuel, planelife, mTruckTexture, tankTexture, missileTexture;
+	sf::Texture bgtexture, hud, planeTexture, fuel, planelife, tank1Texture, tank2Texture, missileTexture;
 
 
 
@@ -77,9 +77,9 @@ void Engine::start() {
 		std::cout << "Cannot load form file" << std::endl;
 	if (!missileTexture.loadFromFile("resources/missile.png"))						//Missile Texture
 		std::cout << "Cannot load form file" << std::endl;
-	if (!mTruckTexture.loadFromFile("resources/tan2.png"))							//Tank 1 Texture
+	if (!tank1Texture.loadFromFile("resources/tan2.png"))							//Tank 1 Texture
 		std::cout << "Cannot load form file" << std::endl;
-	if (!tankTexture.loadFromFile("resources/tan.png"))								//Tank 2 Texture
+	if (!tank2Texture.loadFromFile("resources/tan.png"))								//Tank 2 Texture
 		std::cout << "Cannot load form file" << std::endl;
 
 
@@ -87,19 +87,19 @@ void Engine::start() {
 	sf::Sprite bgsprite, planeSprite, mTruckSprite, fuelicon, planelifeindicator, hudmenu, tankSprite, missileSprite;
 
 	//Indivisualling Giving Textures to Sprites
-	mTruckSprite.setTexture(mTruckTexture);
+	mTruckSprite.setTexture(tank1Texture);
 	bgsprite.setTexture(bgtexture);
 	hudmenu.setTexture(hud);
 	planelifeindicator.setTexture(planelife);
 	fuelicon.setTexture(fuel);
 	planeSprite.setTexture(planeTexture);
-	tankSprite.setTexture(tankTexture);
+	tankSprite.setTexture(tank2Texture);
 	missileSprite.setTexture(missileTexture);
 
 	sf::Vector2u sizePlane = planeTexture.getSize();
 	sf::Vector2u sizeMissile = missileTexture.getSize();
-	sf::Vector2u sizemTruck = mTruckTexture.getSize();
-	sf::Vector2u sizeTank = tankTexture.getSize();
+	sf::Vector2u sizemTruck = tank1Texture.getSize();
+	sf::Vector2u sizeTank = tank2Texture.getSize();
 	sf::Vector2u sizeHud = hud.getSize();
 
 	//HUD Texts
@@ -301,8 +301,7 @@ void Engine::start() {
 		//Draw all the gameobjects according to z-index
 		window.draw(missileSprite);
 		window.draw(planeSprite);
-		Level1::Start(mTruckTexture, tankTexture, &missileSprite, window);
-		
+		Level1::Start(tank1Texture, tank2Texture, &missileSprite, window);
 		//Collision Detection
 		/*if (Collision::Detect(&missileSprite, &mTruckSprite))
 		{

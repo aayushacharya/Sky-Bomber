@@ -23,7 +23,7 @@ void Launch::Missile(sf::Sprite& plane, sf::Sprite* planeMissile,sf::RenderWindo
 			}
 			else
 			{
-				angle = (planePos.y - groundMissilePos.y) / (planePos.x - groundMissilePos.x);
+				angle = -(planePos.y - groundMissilePos.y) / (planePos.x - groundMissilePos.x);
 			}
 
 			counter = 0;

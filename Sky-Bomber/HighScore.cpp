@@ -50,3 +50,15 @@ void Highscore::Save(int score)
 	}
 	writeFile.close();
 }
+
+void Highscore::Get(std::string getName[3],std::string getHighScore[3])
+{
+	ifstream readfile;
+	readfile.open("highscore.txt");
+	for (int i = 0;i < 3;i++)
+	{
+		getline(readfile, getName[i]);
+		getline(readfile, getHighScore[i]);
+	}
+	readfile.close();
+}
