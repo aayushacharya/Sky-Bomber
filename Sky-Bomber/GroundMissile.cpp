@@ -5,15 +5,15 @@
 #include"../GroundMissile.h"
 GroundMissile::GroundMissile()
 {
-	sf::Texture missileText, missileBaseText;
-	if (!missileText.loadFromFile("resources/groundmissile.png") || !missileBaseText.loadFromFile("resources/base.png"))
+	
+	if (!missileText.loadFromFile("resources/groundmissile.png") || !missileBaseText.loadFromFile("resources/missilebase.png"))
 	{
 		std::cout << "Couldn't load from file";
 	}
 	missileBase.setTexture(missileBaseText);
 	missileSprite.setTexture(missileText);
-	missileBase.setPosition(sf::Vector2f(400.0f, 680.0f));
-	missileSprite.setPosition(sf::Vector2f(400.0f, 680.0f));
+	missileBase.setPosition(sf::Vector2f(400.0f, 550.0f));
+	missileSprite.setPosition(sf::Vector2f(400.0f, 550.0f));
 }
 void GroundMissile::setMissilePosition(sf::Vector2f pos)
 {
@@ -26,6 +26,10 @@ sf::Vector2f GroundMissile::getMissilePosition()
 void GroundMissile::setBasePosition(sf::Vector2f pos)
 {
 	missileBase.setPosition(sf::Vector2f(pos.x, pos.y));
+}
+void GroundMissile::setMissileRotation(float angle)
+{
+	missileSprite.setRotation(angle*180.0f/3.14f);
 }
 sf::Vector2f GroundMissile::getBasePosition()
 {

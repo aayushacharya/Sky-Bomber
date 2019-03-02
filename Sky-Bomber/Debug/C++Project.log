@@ -1,6 +1,2 @@
-﻿  GameEngine.cpp
-  GameObject.cpp
-  HighScore.cpp
-  Generating Code...
-e:\sky-bomber\sky-bomber\gameobject.cpp(145): warning C4715: 'Level1::sendScore': not all control paths return a value
-  C++Project.vcxproj -> E:\Sky-Bomber\Sky-Bomber\Debug\C++Project.exe
+﻿  GameObject.cpp
+  C++Project.vcxproj -> E:\Sky-Bomber\Sky-Bomber\Sky-Bomber\Debug\C++Project.exe

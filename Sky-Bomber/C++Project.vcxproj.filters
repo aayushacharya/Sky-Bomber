@@ -54,6 +54,18 @@
     <ClCompile Include="HighScore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LaunchGroundMissile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundMissile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScoreScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -87,6 +99,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="HighScore.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LaunchGroundMissile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundMissile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreScreen.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

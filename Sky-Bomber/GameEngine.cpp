@@ -7,6 +7,7 @@
 #include"../GameObject.h"
 #include"../FuelCheck.h"
 #include"../HighScore.h"
+
 void Engine::start() {
 
 	//inital parameters set
@@ -301,6 +302,7 @@ void Engine::start() {
 		window.draw(missileSprite);
 		window.draw(planeSprite);
 		Level1::Start(mTruckTexture, tankTexture, &missileSprite, window);
+		
 		//Collision Detection
 		/*if (Collision::Detect(&missileSprite, &mTruckSprite))
 		{

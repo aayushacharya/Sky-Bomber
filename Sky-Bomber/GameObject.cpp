@@ -8,18 +8,13 @@
 #include "SFML/Audio.hpp"
 #include"../FuelCheck.h"
 #include "../HighScore.h"
-
+#include"../Tank.h"
 FuelCheck fuelcheck;
-void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSprite, sf::RenderWindow& window)
+void Level1::Start(sf::Texture& tank1Text, sf::Texture& tank2Text, sf::Sprite* missileSprite, sf::RenderWindow& window)
 {
 	int flag = 1;
 	static int flag1 = 1;
-	static float tank1X[5] = { 700.0f,700.0f,700.0f,700.0f,700.0f }, tank1Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
-	static float tank2X[5] = { 30.0f,30.0f,30.0f,30.0f,30.0f }, tank2Y[5] = { 680.0f,680.0f,680.0f,680.0f,680.0f };
-	static float tank1OffsetX[5] = { -4.0f,-4.0f,-4.0f,-4.0f,-4.0f };
-	static float tank2OffsetX[5] = { 3.0f,3.0f,3.0f,3.0f,3.0f };
-	static sf::Sprite tank1Sprite[5];
-	static sf::Sprite tank2Sprite[5];
+	static Tank tank1[5], tank2[5];
 	static bool initialization = true;
 	static bool allGameObjSent = false;
 	static int counter = 1;
@@ -34,15 +29,21 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 	{
 		for (int i = 0; i < 5; i++)
 		{
-			tank1Sprite[i].setTexture(tank1);
-			tank2Sprite[i].setTexture(tank2);
+			
+			tank1[i].setTexture(tank1Text);
+			tank1[i].x = 700.0f;
+			tank1[i].offsetX = -4.0f;
+			tank2[i].setTexture(tank2Text);
+			tank2[i].x = 30.0f;
+			tank2[i].offsetX = 3.0f;
+			tank1[i].y = 680.0f, tank2[i].y = 680.0f;
 		}
 		if (!explosion.openFromFile("resources/Explosion.wav"))
 			std::cout << "sound not streamed" << std::endl;
 
 	}
 	initialization = false;
-	//todo 
+	
 	static sf::Clock clk;
 	if (clk.getElapsedTime().asSeconds() > 10.0f)
 	{
@@ -59,22 +60,22 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 
 	for (int i = 0; i < counter; i++)
 	{
-		GameObj::Boundary::Check(tank1Sprite[i], tank1X[i], tank1OffsetX[i], "left");
-		GameObj::Boundary::Check(tank2Sprite[i], tank2X[i], tank2OffsetX[i], "right");
-		tank1Sprite[i].setPosition(sf::Vector2f(tank1X[i], tank1Y[i]));
-		tank2Sprite[i].setPosition(sf::Vector2f(tank2X[i], tank2Y[i]));
-		if (Collision::Detect(missileSprite, &tank1Sprite[i]))
+		GameObj::Boundary::Check(tank1[i].getAddress(), tank1[i].x, tank1[i].offsetX, "left");
+		GameObj::Boundary::Check(tank2[i].getAddress(), tank2[i].x, tank2[i].offsetX, "right");
+		tank1[i].setPosition(sf::Vector2f(tank1[i].x, tank1[i].y));
+		tank2[i].setPosition(sf::Vector2f(tank2[i].x, tank2[i].y));
+		if (Collision::Detect(missileSprite, &tank1[i].getAddress()))
 		{
 			score += 100;
 			fuelcheck.isFinished(true);
 			tank2Collision = false;
-			tank1_CollisionX = tank1X[i];
+			tank1_CollisionX = tank1[i].x;
 			tank1Collision = true;
 			collisionObj = i;
 			Explosion::Create(tank1_CollisionX, 680.0f, window, "tank1", collisionObj);
 			explosion.play();
-			tank1OffsetX[i] = 0;
-			tank1X[i] = -100;
+			tank1[i].offsetX = 0;
+			tank1[i].x = -100;
 			tank1CollisionRecord[i] = true;
 
 		}
@@ -86,19 +87,19 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 		}
 		if (!tank1CollisionRecord[i])
 		{
-			window.draw(tank1Sprite[i]);
+			tank1[i].draw(window);
 		}
-		if (Collision::Detect(missileSprite, &tank2Sprite[i]))
+		if (Collision::Detect(missileSprite, &tank2[i].getAddress()))
 		{
 			score += 100;
 			fuelcheck.isFinished(true);
 			collisionObj = i;
-			tank2_CollisionX = tank2X[i];
+			tank2_CollisionX = tank2[i].x;
 			tank2Collision = true;
 			Explosion::Create(tank2_CollisionX, 680.0f, window, "tank2", collisionObj);
 			explosion.play();
-			tank2OffsetX[i] = 0;
-			tank2X[i] = -100;
+			tank2[i].offsetX = 0;
+			tank2[i].x = -100;
 			tank1Collision = false;
 			tank2CollisionRecord[i] = true;
 
@@ -109,10 +110,10 @@ void Level1::Start(sf::Texture& tank1, sf::Texture& tank2, sf::Sprite* missileSp
 		}
 		if (!tank2CollisionRecord[i])
 		{
-			window.draw(tank2Sprite[i]);
+			tank2[i].draw(window);
 		}
-		tank1X[i] += tank1OffsetX[i];
-		tank2X[i] += tank2OffsetX[i];
+		tank1[i].x += tank1[i].offsetX;
+		tank2[i].x += tank2[i].offsetX;
 		
 	}
 	for (int i = 0;i < 5;i++)

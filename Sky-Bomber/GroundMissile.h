@@ -6,6 +6,7 @@ class GroundMissile
 private:
 	sf::Sprite missileSprite;
 	sf::Sprite missileBase;
+	sf::Texture missileText, missileBaseText;
 public:
 	GroundMissile();
 	void setMissilePosition(sf::Vector2f);
@@ -14,6 +15,7 @@ public:
 	sf::Vector2f getBasePosition();
 	void moveMissile(sf::Vector2f);
 	void drawMissile(sf::RenderWindow&);
+	void setMissileRotation(float);
 	void drawBase(sf::RenderWindow&);
 	sf::Sprite* getBaseAddress();
 };

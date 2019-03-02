@@ -22,29 +22,37 @@
     <ClCompile Include="Boundary.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="GroundMissile.cpp" />
     <ClCompile Include="HighScore.cpp" />
     <ClCompile Include="FuelCheck.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HighScoreScreen.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="LaunchGroundMissile.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Source files\Main.cpp" />
     <ClCompile Include="splashscreen.cpp" />
+    <ClCompile Include="Tank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boundary.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Explosion.h" />
+    <ClInclude Include="GroundMissile.h" />
     <ClInclude Include="HighScore.h" />
     <ClInclude Include="FuelCheck.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HighScoreScreen.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="LaunchGroundMissile.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="splashscreen.h" />
+    <ClInclude Include="Tank.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

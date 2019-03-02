@@ -32,7 +32,8 @@ void Launch::Missile(sf::Sprite& plane, sf::Sprite* planeMissile,sf::RenderWindo
 		{
 			counter++;
 		}
-		gm1.moveMissile(sf::Vector2f(SPEED*cos(angle), SPEED*sin(3.1412 + angle)));
+		gm1.setMissileRotation(angle);
+		gm1.moveMissile(sf::Vector2f(SPEED*cos(angle), SPEED*sin(3.1412f + angle)));
 		gm1.drawBase(window);
 		gm1.drawMissile(window);
 	}
@@ -43,7 +44,7 @@ void Launch::Missile(sf::Sprite& plane, sf::Sprite* planeMissile,sf::RenderWindo
 	if (baseBlasted)
 	{
 		sf::Vector2f basePos=gm1.getBasePosition();
-		Explosion::Create(basePos.x, basePos.y, window, "base", 0);
+		//Explosion::Create(basePos.x, basePos.y, window, "tank1", 0);
 		gm1.setBasePosition(sf::Vector2f(-100.0f, -100.0f));
 	}
 	
