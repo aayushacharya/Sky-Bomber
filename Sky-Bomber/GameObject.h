@@ -5,4 +5,4 @@ namespace Level1
 {
 	void Start(sf::Texture&,sf::Texture&,sf::Sprite*,sf::RenderWindow&);
 	int sendScore(int score);
-}
+}//test
