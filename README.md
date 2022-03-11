@@ -17,10 +17,12 @@ Please utilize the ``C++Project.sln`` file to create a Visual Studio project and
 
 ## Contributors
 
-Aayush Acharya
-Anjil Bishwokarma
-Nirajan Basnet
+[Aayush Acharya](https://github.com/aayushacharya)
+
+[Anjil Bishwokarma](https://github.com/anzeal)
+
+[Nirajan Basnet](https://github.com/QuizzerNirajan)
 
 ## Special thanks
 
-Rabin Adhikari
+[Rabin Adhikari](https://github.com/rabinadk1)
